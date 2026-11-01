@@ -14,7 +14,7 @@
     <!-- Managed by release-please, do not edit by hand. -->
     <version>0.5.0</version>
     <name>curiositas</name>
-    <description>A public database of curious history, from antiquity to modern times</description>
+    <description>A curated, versioned dataset of history with honest uncertainty, published through a REST API</description>
     <url>https://github.com/juninatt/Curiositas</url>
 
     <properties>

@@ -4,8 +4,9 @@ info:
   title: Curiositas API
   version: '1'
   description: |
-    A public database of curious history, from antiquity to modern times. It starts with
-    historical people.
+    A curated, versioned dataset of history, from antiquity to modern times, with honest
+    uncertainty. It starts with historical people. The API is meant for any client, whether it
+    loads the data once or keeps in sync with it.
 
     **Reading** is open to everyone. **Writing** (POST, PUT, DELETE) requires authentication.
 

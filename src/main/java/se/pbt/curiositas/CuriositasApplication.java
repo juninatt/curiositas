@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Entry point of the Curiositas API, a public database of curious history from antiquity to modern
- * times.
+ * Entry point of Curiositas, which curates historical facts into a versioned dataset with honest
+ * uncertainty and publishes it through a REST API.
  */
 @SpringBootApplication
 public class CuriositasApplication {

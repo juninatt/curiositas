@@ -1,8 +1,31 @@
 # Curiositas
 
-A public database of curious history, from antiquity to modern times. It starts with people and
-grows to cover events, places and more. The data is structured so it can be shown in charts and
-tables, and the project doubles as a showcase of API design and API testing.
+Curiositas turns scattered and contradictory historical facts into a curated, versioned dataset
+with honest uncertainty, and publishes it through a standard API that any client can read once or
+keep in sync with. It starts with historical people, from antiquity to modern times.
+
+Raw facts are easy to find but hard to use. Sources disagree (Julius Caesar was born on 12 or
+13 July 100 BC), give only approximate years, or mark a birthplace as merely probable. Curiositas
+adds value in three steps:
+
+| Step | What it means |
+|---|---|
+| **Curate** | Choose which people to include and settle conflicting sources. Facts are to be fetched from Wikidata rather than typed in by hand, and every change is reviewed before it is stored. |
+| **Model** | Store only what the sources support: a date can be known to the year or month only, with an uncertainty in years, and derived values such as age are calculated as ranges. |
+| **Publish** | Serve the data through a contract-first REST API, designed for clients that load everything once or keep in sync with every change, including deletions. |
+
+```
+Wikidata ──fetch──▶ JSON files in git ──import──▶ PostgreSQL ──REST API──▶ clients
+                    (reviewed as diffs)
+```
+
+User interfaces are separate projects that only use the API, such as
+[Conspectus](https://github.com/juninatt/Conspectus). The project also serves as a showcase of
+API design and API testing.
+
+**Status:** curating by hand, modelling and the read and write API are in place. Fetching from
+Wikidata, the revision history and synchronisation are planned; see the
+[backlog](docs/BACKLOG.md).
 
 ## Tech stack
 
