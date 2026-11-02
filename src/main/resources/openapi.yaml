@@ -199,6 +199,51 @@ paths:
         '406':
           $ref: '#/components/responses/NotAcceptable'
 
+  /changes:
+    get:
+      tags: [ Dataset ]
+      operationId: listChanges
+      summary: List the changes after a version
+      description: |
+        Every change made after the given version, in the order they were committed, including
+        deletions. Apply them in order to a copy loaded from the snapshot, then ask again with
+        the returned version. A change is never added later before one already returned, so
+        nothing is missed. Each change shows the person exactly as the person endpoints showed
+        it after the change; a deletion only names the person.
+      parameters:
+        - name: after
+          in: query
+          description: |
+            The version the client already has: the version of its snapshot, or of the last
+            changes it applied. 0 gives every change from the start. A version beyond the latest
+            is answered with 400, since such a copy cannot come from this dataset; load the
+            snapshot again.
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          description: The most changes to return at once
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 1000
+            default: 100
+      responses:
+        '200':
+          description: The changes after the version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeFeed'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+
   /persons/{id}/revisions:
     parameters:
       - $ref: '#/components/parameters/PersonId'
@@ -475,6 +520,56 @@ components:
           description: Every person, ordered by name
           items:
             $ref: '#/components/schemas/Person'
+
+    ChangeFeed:
+      type: object
+      description: Changes made after a version, oldest first
+      required: [ changes, version, hasMore ]
+      properties:
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Change'
+        version:
+          type: integer
+          format: int64
+          description: The version a copy has after applying these changes; send it as `after` next time
+          minimum: 0
+          example: 60
+        hasMore:
+          type: boolean
+          description: Whether more changes are waiting; if so, ask again right away
+
+    Change:
+      type: object
+      description: One change to the dataset
+      required: [ sequenceNumber, recordType, id, change, source, changedAt ]
+      properties:
+        sequenceNumber:
+          type: integer
+          format: int64
+          description: The position of this change among all changes; also the version after it
+          example: 58
+        recordType:
+          $ref: '#/components/schemas/RecordType'
+        id:
+          type: string
+          format: uuid
+          description: The id of the record that changed
+        change:
+          $ref: '#/components/schemas/ChangeType'
+        source:
+          $ref: '#/components/schemas/ChangeSource'
+        changedAt:
+          type: string
+          format: date-time
+        person:
+          $ref: '#/components/schemas/Person'
+
+    RecordType:
+      type: string
+      description: The kind of record a change concerns; more kinds will be added
+      enum: [ PERSON ]
 
     PersonRevisionList:
       type: object

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import se.pbt.curiositas.api.model.FieldErrorDto;
+import se.pbt.curiositas.dataset.VersionAheadException;
 import se.pbt.curiositas.person.DuplicatePersonException;
 import se.pbt.curiositas.person.InvalidPersonException;
 import se.pbt.curiositas.person.PersonChangedException;
@@ -62,6 +63,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     ProblemDetail handlePersonDeleted(PersonDeletedException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.GONE, exception.getMessage());
+    }
+
+    /**
+     * Answers 400 Bad Request when a client asks for changes after a version the dataset has not
+     * reached, so it knows to load the snapshot again instead of waiting for changes that never come.
+     *
+     * @param exception the error naming both versions
+     * @return the problem description
+     */
+    @ExceptionHandler
+    ProblemDetail handleVersionAhead(VersionAheadException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     /**

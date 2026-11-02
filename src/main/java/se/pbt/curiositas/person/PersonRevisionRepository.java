@@ -1,5 +1,6 @@
 package se.pbt.curiositas.person;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,6 +21,15 @@ public interface PersonRevisionRepository extends JpaRepository<PersonRevision, 
      * @return the revisions, or an empty list if the person never existed
      */
     List<PersonRevision> findByPersonIdOrderByRevision(UUID personId);
+
+    /**
+     * Finds the changes made after the given one, in the order they were committed.
+     *
+     * @param after the sequence number of the last change already known, or 0 for all changes
+     * @param limit the most changes to return
+     * @return the changes, oldest first
+     */
+    List<PersonRevision> findBySequenceNumberGreaterThanOrderBySequenceNumber(long after, Limit limit);
 
     /**
      * Finds the latest revision of a person.

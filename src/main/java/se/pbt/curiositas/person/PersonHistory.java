@@ -1,5 +1,6 @@
 package se.pbt.curiositas.person;
 
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,6 +103,18 @@ public class PersonHistory {
         return revisions.findFirstByPersonIdOrderByRevisionDesc(personId)
                 .filter(latest -> latest.getChangeType() == ChangeType.DELETED)
                 .map(PersonRevision::getChangedAt);
+    }
+
+    /**
+     * Returns the changes made after the given one, in the order they were committed. Since writes
+     * take turns, a change can never later appear before one already returned.
+     *
+     * @param after the sequence number of the last change already known, or 0 for all changes
+     * @param limit the most changes to return
+     * @return the changes, oldest first
+     */
+    public List<PersonRevision> changesAfter(long after, int limit) {
+        return revisions.findBySequenceNumberGreaterThanOrderBySequenceNumber(after, Limit.of(limit));
     }
 
     /**

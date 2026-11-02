@@ -91,6 +91,7 @@ drift from the documentation.
 | `DELETE /api/v1/persons/{id}` | Delete a person | Yes |
 | `GET /api/v1/persons/{id}/revisions` | Every change to a person, oldest first, also after it is deleted | No |
 | `GET /api/v1/snapshot` | Every person at once, with the version of the dataset, for clients that keep a copy | No |
+| `GET /api/v1/changes?after=57&limit=100` | Every change after a version, deletions included, to keep such a copy in sync | No |
 
 Creating a person:
 

@@ -157,13 +157,30 @@ public final class PersonMapper {
      * @return the person as returned by the API
      */
     public static PersonDto toDto(Person person) {
+        return toDto(person, person.getId(), person.getCreatedAt(), person.getUpdatedAt());
+    }
+
+    /**
+     * Converts the person a revision holds, exactly as the person endpoints showed it after that
+     * change, derived values included.
+     *
+     * @param revision a creation or an update; a deletion holds the person as it was before it
+     * @return the person as returned by the API at that revision
+     */
+    public static PersonDto toDto(PersonRevision revision) {
+        Person person = toNewPerson(PersonSnapshots.read(revision.getSnapshot()));
+        return toDto(person, revision.getPersonId(), revision.getPersonCreatedAt(), revision.getChangedAt());
+    }
+
+    /** Converts a person, with the stored values the database layer gives it. */
+    private static PersonDto toDto(Person person, UUID id, Instant createdAt, Instant updatedAt) {
         return new PersonDto(
-                person.getId(),
+                id,
                 person.getName(),
                 person.getAlsoKnownAs().stream().map(PersonMapper::toDto).toList(),
                 GenderDto.valueOf(person.getGender().name()),
-                toOffsetDateTime(person.getCreatedAt()),
-                toOffsetDateTime(person.getUpdatedAt()))
+                toOffsetDateTime(createdAt),
+                toOffsetDateTime(updatedAt))
                 .wikidataId(person.getWikidataId())
                 .birth(toDto(person.getBirth()))
                 .death(toDto(person.getDeath()))
