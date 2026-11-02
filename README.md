@@ -23,8 +23,8 @@ User interfaces are separate projects that only use the API, such as
 [Conspectus](https://github.com/juninatt/Conspectus). The project also serves as a showcase of
 API design and API testing.
 
-**Status:** curating by hand, modelling and the read and write API are in place. Fetching from
-Wikidata, the revision history and synchronisation are planned; see the
+**Status:** curating by hand, modelling, the read and write API, the revision history and
+synchronisation are in place. Fetching from Wikidata is next; see the
 [backlog](docs/BACKLOG.md).
 
 ## Tech stack

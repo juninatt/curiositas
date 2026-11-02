@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import se.pbt.curiositas.TestcontainersConfiguration;
 import se.pbt.curiositas.person.PersonRepository;
+import se.pbt.curiositas.person.PersonRevisionRepository;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -52,10 +53,17 @@ abstract class ApiTestBase {
     @Autowired
     private PersonRepository persons;
 
-    /** Starts every test from an empty database, so tests never depend on each other. */
+    @Autowired
+    private PersonRevisionRepository revisions;
+
+    /**
+     * Starts every test from an empty database, history included, so tests never depend on each
+     * other and the change feed from the start holds only the test's own changes.
+     */
     @BeforeEach
     void startFromEmptyDatabase() {
         persons.deleteAll();
+        revisions.deleteAll();
     }
 
     /**
