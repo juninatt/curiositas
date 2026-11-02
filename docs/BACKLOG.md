@@ -20,10 +20,10 @@ steps. Tests are written alongside every step, never afterwards.
 
 ### 1. Prove the API against its contract
 
-- [ ] Run integration tests separately with failsafe, reported in CI
-- [ ] Test the person lifecycle over real HTTP with REST Assured and a real database
-- [ ] Validate every request and response in those tests against the OpenAPI contract
-- [ ] Cover every error response end to end (400, 401, 404, 409, 412, 422, 428)
+- [x] Run integration tests separately with failsafe, reported in CI
+- [x] Test the person lifecycle over real HTTP with REST Assured and a real database
+- [x] Validate every request and response in those tests against the OpenAPI contract
+- [x] Cover every error response end to end (400, 401, 404, 406, 409, 412, 422, 428)
 
 ### 2. Revision history owned by the application
 
@@ -64,7 +64,7 @@ optional fields, endpoints and query parameters is safe afterwards; making a fie
 renaming, removing or changing the meaning of one is not. Before 1.0:
 
 - [x] JSON backup in `data/`, so no data depends on a single database
-- [ ] The API is proven to match its contract (roadmap step 1)
+- [x] The API is proven to match its contract (roadmap step 1)
 - [ ] The revision history and the change feed have the shape they are meant to keep (steps 2–3)
 - [ ] The person fields have the shape they are meant to keep
 
