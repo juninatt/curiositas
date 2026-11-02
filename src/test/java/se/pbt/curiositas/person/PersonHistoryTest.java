@@ -141,10 +141,24 @@ class PersonHistoryTest {
         assertThat(JSON.readTree(snapshot).propertyNames()).containsExactlyInAnyOrder("name", "gender");
     }
 
-    /** Returns no revisions for a person that never existed. */
+    /** Returns no revisions for a person that never existed, and the service answers that it was not found. */
     @Test
     void hasNoRevisionsForUnknownPerson() {
-        assertThat(history.of(UUID.randomUUID())).isEmpty();
+        UUID unknown = UUID.randomUUID();
+
+        assertThat(history.of(unknown)).isEmpty();
+        assertThatExceptionOfType(PersonNotFoundException.class).isThrownBy(() -> service.revisions(unknown));
+    }
+
+    /** Lets the service list the revisions of a deleted person, since its history is kept. */
+    @Test
+    void listsRevisionsOfDeletedPerson() {
+        UUID id = service.create(teach()).getId();
+        service.delete(id);
+        startNewRequest();
+
+        assertThat(service.revisions(id)).extracting(PersonRevision::getChangeType)
+                .containsExactly(ChangeType.CREATED, ChangeType.DELETED);
     }
 
     /** Reads a revision's snapshot as JSON. */

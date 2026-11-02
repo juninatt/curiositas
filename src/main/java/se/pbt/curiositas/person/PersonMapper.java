@@ -3,6 +3,8 @@ package se.pbt.curiositas.person;
 import org.springframework.data.domain.Page;
 import se.pbt.curiositas.api.model.AgeRangeDto;
 import se.pbt.curiositas.api.model.AlternativeNameDto;
+import se.pbt.curiositas.api.model.ChangeSourceDto;
+import se.pbt.curiositas.api.model.ChangeTypeDto;
 import se.pbt.curiositas.api.model.CountryDto;
 import se.pbt.curiositas.api.model.GenderDto;
 import se.pbt.curiositas.api.model.HistoricalDateDto;
@@ -11,6 +13,8 @@ import se.pbt.curiositas.api.model.NameTypeDto;
 import se.pbt.curiositas.api.model.PersonDto;
 import se.pbt.curiositas.api.model.PersonInputDto;
 import se.pbt.curiositas.api.model.PersonPageDto;
+import se.pbt.curiositas.api.model.PersonRevisionDto;
+import se.pbt.curiositas.api.model.PersonRevisionListDto;
 import se.pbt.curiositas.date.AgeRange;
 import se.pbt.curiositas.date.HistoricalDate;
 import se.pbt.curiositas.person.InvalidPersonException.Violation;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Converts between persons and the API's models. Incoming data is checked against the rules that
@@ -182,6 +187,25 @@ public final class PersonMapper {
                 page.getSize(),
                 page.getTotalElements(),
                 page.getTotalPages());
+    }
+
+    /**
+     * Converts the history of a person, reading each snapshot back into the form clients send.
+     *
+     * @param personId  the id of the person
+     * @param revisions every revision of the person, oldest first
+     * @return the history as returned by the API
+     */
+    static PersonRevisionListDto toDto(UUID personId, List<PersonRevision> revisions) {
+        return new PersonRevisionListDto(personId, revisions.stream()
+                .map(revision -> new PersonRevisionDto(
+                        revision.getSequenceNumber(),
+                        revision.getRevision(),
+                        ChangeTypeDto.valueOf(revision.getChangeType().name()),
+                        ChangeSourceDto.valueOf(revision.getSource().name()),
+                        toOffsetDateTime(revision.getChangedAt()),
+                        PersonSnapshots.read(revision.getSnapshot())))
+                .toList());
     }
 
     /** Converts an alternative name. */

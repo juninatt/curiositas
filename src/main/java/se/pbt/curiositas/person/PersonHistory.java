@@ -3,7 +3,6 @@ package se.pbt.curiositas.person;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,9 +15,6 @@ import java.util.UUID;
  */
 @Component
 public class PersonHistory {
-
-    /** Writes snapshots in the same form as the data files; unknown values are left out. */
-    private static final JsonMapper JSON = JsonMapper.builder().build();
 
     private final PersonRevisionRepository revisions;
 
@@ -87,7 +83,7 @@ public class PersonHistory {
     /** Stores the next revision of the person. */
     private void record(Person person, ChangeType changeType, ChangeSource source, Instant changedAt) {
         int revision = revisions.findLatestRevision(person.getId()) + 1;
-        String snapshot = JSON.writeValueAsString(PersonMapper.toInput(person));
-        revisions.save(new PersonRevision(person.getId(), revision, changeType, source, changedAt, snapshot));
+        revisions.save(new PersonRevision(person.getId(), revision, changeType, source, changedAt,
+                PersonSnapshots.of(person)));
     }
 }

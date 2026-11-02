@@ -11,6 +11,7 @@ import se.pbt.curiositas.api.PersonsApi;
 import se.pbt.curiositas.api.model.PersonDto;
 import se.pbt.curiositas.api.model.PersonInputDto;
 import se.pbt.curiositas.api.model.PersonPageDto;
+import se.pbt.curiositas.api.model.PersonRevisionListDto;
 
 import java.net.URI;
 import java.util.UUID;
@@ -60,6 +61,14 @@ public class PersonController implements PersonsApi {
                 .eTag(eTag(person))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(PersonMapper.toDto(person));
+    }
+
+    /** Returns every revision of a person, oldest first, also for a deleted person. */
+    @Override
+    public ResponseEntity<PersonRevisionListDto> listPersonRevisions(UUID id) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(PersonMapper.toDto(id, service.revisions(id)));
     }
 
     /**

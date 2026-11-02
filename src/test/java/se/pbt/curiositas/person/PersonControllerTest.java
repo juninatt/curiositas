@@ -28,6 +28,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static se.pbt.curiositas.person.StoredPersons.stored;
+import static se.pbt.curiositas.person.StoredPersons.storedRevision;
 
 /**
  * Verifies the person endpoints at the HTTP level: paths, status codes, headers, JSON and error
@@ -93,6 +94,42 @@ class PersonControllerTest {
     void answersBadRequestForMalformedId() {
         assertThat(mvc.get().uri("/api/v1/persons/not-a-uuid"))
                 .hasStatus(HttpStatus.BAD_REQUEST)
+                .hasContentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON);
+    }
+
+    /** Returns every revision of a person, oldest first, each with the person as it then was. */
+    @Test
+    void listsRevisionsOfPerson() {
+        Person teach = stored(new Person("Edward Teach", Gender.MALE), ID, 0);
+        Person thatch = stored(new Person("Edward Thatch", Gender.MALE), ID, 1);
+        given(service.revisions(ID)).willReturn(List.of(
+                storedRevision(41, teach, 1, ChangeType.CREATED),
+                storedRevision(57, thatch, 2, ChangeType.UPDATED)));
+
+        assertThat(mvc.get().uri("/api/v1/persons/{id}/revisions", ID))
+                .hasStatusOk()
+                .hasContentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+                .bodyJson()
+                .hasPathSatisfying("$.personId", id -> assertThat(id).asString().isEqualTo(ID.toString()))
+                .hasPathSatisfying("$.revisions[*].sequenceNumber", numbers -> assertThat(numbers).asInstanceOf(LIST)
+                        .containsExactly(41, 57))
+                .hasPathSatisfying("$.revisions[1].revision", revision -> assertThat(revision).asNumber().isEqualTo(2))
+                .hasPathSatisfying("$.revisions[1].change", change -> assertThat(change).asString().isEqualTo("UPDATED"))
+                .hasPathSatisfying("$.revisions[1].source", source -> assertThat(source).asString().isEqualTo("API"))
+                .hasPathSatisfying("$.revisions[1].changedAt", time -> assertThat(time).asString()
+                        .isEqualTo("2026-10-09T12:00:00Z"))
+                .hasPathSatisfying("$.revisions[1].person.name", name -> assertThat(name).asString()
+                        .isEqualTo("Edward Thatch"))
+                .doesNotHavePath("$.revisions[1].person.birth");
+    }
+
+    /** Answers 404 when no person with the id has ever existed. */
+    @Test
+    void answersNotFoundForRevisionsOfUnknownPerson() {
+        given(service.revisions(ID)).willThrow(new PersonNotFoundException(ID));
+
+        assertThat(mvc.get().uri("/api/v1/persons/{id}/revisions", ID))
+                .hasStatus(HttpStatus.NOT_FOUND)
                 .hasContentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON);
     }
 

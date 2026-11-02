@@ -72,6 +72,21 @@ public class PersonService {
     }
 
     /**
+     * Returns every revision of a person, oldest first, also when the person has been deleted.
+     *
+     * @param id the id of the person
+     * @return the revisions, at least one
+     * @throws PersonNotFoundException if no person with that id has ever existed
+     */
+    public List<PersonRevision> revisions(UUID id) {
+        List<PersonRevision> revisions = history.of(id);
+        if (revisions.isEmpty()) {
+            throw new PersonNotFoundException(id);
+        }
+        return revisions;
+    }
+
+    /**
      * Saves a new person. The person is written immediately, so the returned person has its id,
      * version and timestamps.
      *

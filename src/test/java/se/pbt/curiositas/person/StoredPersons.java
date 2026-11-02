@@ -33,4 +33,21 @@ public final class StoredPersons {
         ReflectionTestUtils.setField(person, "updatedAt", STORED_AT);
         return person;
     }
+
+    /**
+     * Creates a revision as the database layer would have stored it.
+     *
+     * @param sequenceNumber the sequence number to assign
+     * @param person         the stored person the revision describes
+     * @param revision       the number of the change for that person
+     * @param changeType     what the change did
+     * @return the revision, holding a snapshot of the person
+     */
+    public static PersonRevision storedRevision(long sequenceNumber, Person person, int revision,
+                                                ChangeType changeType) {
+        PersonRevision stored = new PersonRevision(person.getId(), revision, changeType, ChangeSource.API,
+                STORED_AT, PersonSnapshots.of(person));
+        ReflectionTestUtils.setField(stored, "sequenceNumber", sequenceNumber);
+        return stored;
+    }
 }

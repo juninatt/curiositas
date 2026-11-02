@@ -89,6 +89,7 @@ drift from the documentation.
 | `POST /api/v1/persons` | Create a person | Yes |
 | `PUT /api/v1/persons/{id}` | Replace a person; requires `If-Match` with the latest `ETag` | Yes |
 | `DELETE /api/v1/persons/{id}` | Delete a person | Yes |
+| `GET /api/v1/persons/{id}/revisions` | Every change to a person, oldest first, also after it is deleted | No |
 
 Creating a person:
 

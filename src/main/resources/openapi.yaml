@@ -170,6 +170,31 @@ paths:
         '406':
           $ref: '#/components/responses/NotAcceptable'
 
+  /persons/{id}/revisions:
+    parameters:
+      - $ref: '#/components/parameters/PersonId'
+    get:
+      tags: [ Persons ]
+      operationId: listPersonRevisions
+      summary: List the revisions of a person
+      description: |
+        Every change ever made to the person, oldest first, each with the whole person as it was
+        after the change. Deleted persons keep their revisions; the last one is the deletion,
+        holding the person as it was before it.
+      responses:
+        '200':
+          description: The revisions of the person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonRevisionList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
+
 components:
   securitySchemes:
     basicAuth:
@@ -394,6 +419,58 @@ components:
         totalPages:
           type: integer
           format: int32
+
+    PersonRevisionList:
+      type: object
+      description: The full history of one person
+      required: [ personId, revisions ]
+      properties:
+        personId:
+          type: string
+          format: uuid
+        revisions:
+          type: array
+          description: Every revision, oldest first
+          items:
+            $ref: '#/components/schemas/PersonRevision'
+
+    PersonRevision:
+      type: object
+      description: One change to a person, with the whole person as it was after the change
+      required: [ sequenceNumber, revision, change, source, changedAt, person ]
+      properties:
+        sequenceNumber:
+          type: integer
+          format: int64
+          description: The position of this change among all changes in the dataset
+          example: 57
+        revision:
+          type: integer
+          format: int32
+          description: The position of this change among the changes to this person, starting at 1
+          minimum: 1
+          example: 2
+        change:
+          $ref: '#/components/schemas/ChangeType'
+        source:
+          $ref: '#/components/schemas/ChangeSource'
+        changedAt:
+          type: string
+          format: date-time
+        person:
+          $ref: '#/components/schemas/PersonInput'
+
+    ChangeType:
+      type: string
+      description: What the change did; a deletion holds the person as it was before it
+      enum: [ CREATED, UPDATED, DELETED ]
+
+    ChangeSource:
+      type: string
+      description: |
+        Where the change came from: the REST API, an import of the data files in the repository,
+        or Wikidata
+      enum: [ API, IMPORT, WIKIDATA ]
 
     HistoricalDateInput:
       type: object
