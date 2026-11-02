@@ -156,7 +156,7 @@ public final class PersonMapper {
      * @param person the stored person
      * @return the person as returned by the API
      */
-    static PersonDto toDto(Person person) {
+    public static PersonDto toDto(Person person) {
         return new PersonDto(
                 person.getId(),
                 person.getName(),

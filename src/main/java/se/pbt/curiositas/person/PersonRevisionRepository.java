@@ -50,6 +50,14 @@ public interface PersonRevisionRepository extends JpaRepository<PersonRevision, 
     int lockUntilCommit(long key);
 
     /**
+     * Finds the sequence number of the latest change, which is the version of the dataset.
+     *
+     * @return the highest sequence number, or 0 if nothing has changed yet
+     */
+    @Query("select coalesce(max(r.sequenceNumber), 0) from PersonRevision r")
+    long findLatestSequenceNumber();
+
+    /**
      * Finds every person that has at least one revision, including deleted ones.
      *
      * @return the ids of those persons

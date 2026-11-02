@@ -29,6 +29,10 @@ servers:
 tags:
   - name: Persons
     description: Historical people
+  - name: Dataset
+    description: |
+      The whole dataset at once, for clients that keep their own copy: load the snapshot once,
+      then stay in sync with the changes made after its version
 
 paths:
   /persons:
@@ -175,6 +179,25 @@ paths:
           $ref: '#/components/responses/NotAcceptable'
         '410':
           $ref: '#/components/responses/Gone'
+
+  /snapshot:
+    get:
+      tags: [ Dataset ]
+      operationId: getSnapshot
+      summary: Get the whole dataset
+      description: |
+        Every person as it is now, ordered by name, together with the version of the dataset they
+        belong to. The persons and the version are read at the same moment, so a client that
+        loads the snapshot and then asks for the changes after its version misses nothing.
+      responses:
+        '200':
+          description: The whole dataset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetSnapshot'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
 
   /persons/{id}/revisions:
     parameters:
@@ -433,6 +456,25 @@ components:
         totalPages:
           type: integer
           format: int32
+
+    DatasetSnapshot:
+      type: object
+      description: The whole dataset at one version
+      required: [ version, persons ]
+      properties:
+        version:
+          type: integer
+          format: int64
+          description: |
+            The sequence number of the latest change included, or 0 for an empty dataset. Ask for
+            the changes after it to stay in sync.
+          minimum: 0
+          example: 57
+        persons:
+          type: array
+          description: Every person, ordered by name
+          items:
+            $ref: '#/components/schemas/Person'
 
     PersonRevisionList:
       type: object

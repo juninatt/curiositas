@@ -105,6 +105,15 @@ public class PersonHistory {
     }
 
     /**
+     * Returns the version of the dataset: the sequence number of the latest committed change.
+     *
+     * @return the version, or 0 if nothing has changed yet
+     */
+    public long version() {
+        return revisions.findLatestSequenceNumber();
+    }
+
+    /**
      * Returns the persons that have a history. A stored person without one was stored before the
      * history existed, and gets its first revision from the next import.
      *
