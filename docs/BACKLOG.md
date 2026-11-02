@@ -27,10 +27,11 @@ steps. Tests are written alongside every step, never afterwards.
 
 ### 2. Revision history owned by the application
 
-- [ ] Record every change (created, updated, deleted) in the same transaction as the change, with
+- [x] Record every change (created, updated, deleted) in the same transaction as the change, with
   its source (API, import, Wikidata), time and a full snapshot of the person
-- [ ] Show a person's revisions, including those of deleted persons
-- [ ] Answer 410 Gone for a deleted person, instead of 404 for one that never existed
+- [x] Show a person's revisions, including those of deleted persons
+- [x] Answer 410 Gone for a deleted person, instead of 404 for one that never existed
+- [x] Prove that replaying the revisions from the start always gives the current data
 
 ### 3. Publish and synchronise
 
@@ -38,6 +39,8 @@ steps. Tests are written alongside every step, never afterwards.
 - [ ] ETag and 304 Not Modified, so unchanged data is never sent again
 - [ ] Change feed by sequence number (`/changes?after=…`), including deletions, so clients can keep
   in sync even after missing several syncs
+- [ ] Hand out sequence numbers in the order changes are committed, for example by letting writes
+  take turns, so a client reading the feed between two concurrent changes cannot miss one
 - [ ] The highest sequence number as the dataset version
 - [ ] Prove that replaying the change feed from the start gives exactly the current data, and that
   a client syncing at random intervals always ends up identical to the server
