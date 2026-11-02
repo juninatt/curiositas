@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import se.pbt.curiositas.api.model.HistoricalDateInputDto;
 import se.pbt.curiositas.api.model.PersonInputDto;
 import se.pbt.curiositas.json.JsonFieldPath;
+import se.pbt.curiositas.person.ChangeSource;
 import se.pbt.curiositas.person.InvalidPersonException;
 import se.pbt.curiositas.person.Person;
+import se.pbt.curiositas.person.PersonHistory;
 import se.pbt.curiositas.person.PersonMapper;
 import se.pbt.curiositas.person.PersonNames;
 import se.pbt.curiositas.person.PersonRepository;
@@ -37,21 +39,26 @@ import java.util.stream.Stream;
  *
  * <p>Persons are matched to their files by the same identity as the duplicate check uses, so a
  * person keeps its id, and with it every link to it, as long as it is recognisably the same person.
+ * Every person created, changed or deleted gets a revision with the source {@code IMPORT}; an
+ * unchanged person gets none.
  */
 @Component
 public class PersonImporter {
 
     private final PersonRepository repository;
+    private final PersonHistory history;
     private final Validator validator;
 
     /**
      * Creates the importer.
      *
      * @param repository where persons are stored
+     * @param history    records every change, in the same transaction as the import
      * @param validator  checks each file against the same rules as the API's schema
      */
-    public PersonImporter(PersonRepository repository, Validator validator) {
+    public PersonImporter(PersonRepository repository, PersonHistory history, Validator validator) {
         this.repository = repository;
+        this.history = history;
         this.validator = validator;
     }
 
@@ -75,26 +82,29 @@ public class PersonImporter {
         Set<Person> matched = Set.copyOf(matches.values());
         List<Person> deleted = stored.stream().filter(person -> !matched.contains(person)).toList();
         // Deleted first, so a new or changed person can never clash with one that is about to go.
+        deleted.forEach(person -> history.deleted(person, ChangeSource.IMPORT));
         repository.deleteAll(deleted);
         repository.flush();
 
-        int created = 0;
-        int updated = 0;
+        List<Person> created = new ArrayList<>();
+        List<Person> updated = new ArrayList<>();
         int unchanged = 0;
         for (PersonFile file : files) {
             Person existing = matches.get(file);
             if (existing == null) {
-                repository.save(PersonMapper.toNewPerson(file.input()));
-                created++;
+                created.add(repository.save(PersonMapper.toNewPerson(file.input())));
             } else if (file.normalisedContent().equals(contentOf(existing))) {
                 unchanged++;
             } else {
                 PersonMapper.copyInput(file.input(), existing);
-                updated++;
+                updated.add(existing);
             }
         }
+        // Recorded after writing, so each revision has the time and data the database stored.
         repository.flush();
-        return new Result(created, updated, unchanged, deleted.size());
+        created.forEach(person -> history.created(person, ChangeSource.IMPORT));
+        updated.forEach(person -> history.updated(person, ChangeSource.IMPORT));
+        return new Result(created.size(), updated.size(), unchanged, deleted.size());
     }
 
     /** Reads and checks every file, collecting all problems before reporting any. */

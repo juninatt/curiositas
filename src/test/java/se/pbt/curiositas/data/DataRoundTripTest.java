@@ -15,6 +15,7 @@ import se.pbt.curiositas.person.AlternativeName;
 import se.pbt.curiositas.person.Gender;
 import se.pbt.curiositas.person.NameType;
 import se.pbt.curiositas.person.Person;
+import se.pbt.curiositas.person.PersonHistory;
 import se.pbt.curiositas.person.PersonRepository;
 
 import java.io.IOException;
@@ -35,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ImportAutoConfiguration(ValidationAutoConfiguration.class)
-@Import({TestcontainersConfiguration.class, PersonExporter.class, PersonImporter.class})
+@Import({TestcontainersConfiguration.class, PersonExporter.class, PersonImporter.class, PersonHistory.class})
 class DataRoundTripTest {
 
     @Autowired

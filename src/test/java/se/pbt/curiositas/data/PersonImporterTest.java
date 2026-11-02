@@ -13,7 +13,12 @@ import se.pbt.curiositas.TestcontainersConfiguration;
 import se.pbt.curiositas.date.HistoricalDate;
 import se.pbt.curiositas.person.Gender;
 import se.pbt.curiositas.person.Person;
+import se.pbt.curiositas.person.ChangeSource;
+import se.pbt.curiositas.person.ChangeType;
+import se.pbt.curiositas.person.PersonHistory;
 import se.pbt.curiositas.person.PersonRepository;
+import se.pbt.curiositas.person.PersonRevision;
+import se.pbt.curiositas.person.PersonRevisionRepository;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -33,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ImportAutoConfiguration(ValidationAutoConfiguration.class)
-@Import({TestcontainersConfiguration.class, PersonImporter.class})
+@Import({TestcontainersConfiguration.class, PersonImporter.class, PersonHistory.class})
 class PersonImporterTest {
 
     private static final String TEACH = """
@@ -51,11 +56,21 @@ class PersonImporterTest {
             { "name": "Anne Bonny", "birth": { "year": 1697, "uncertaintyYears": 3 }, "gender": "FEMALE" }
             """;
 
+    private static final String CAESAR = """
+            { "name": "Julius Caesar", "wikidataId": "Q1048", "birth": { "year": -99, "month": 7 }, "gender": "MALE" }
+            """;
+
     @Autowired
     private PersonImporter importer;
 
     @Autowired
     private PersonRepository repository;
+
+    @Autowired
+    private PersonHistory history;
+
+    @Autowired
+    private PersonRevisionRepository revisions;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -113,6 +128,35 @@ class PersonImporterTest {
         assertThat(repository.findAll().getFirst().getVersion()).isEqualTo(version);
     }
 
+    /**
+     * Records a revision with the source IMPORT for every person the import creates, changes or
+     * deletes, and none for persons that already match their files.
+     */
+    @Test
+    void recordsImportedChangesInTheHistory() throws IOException {
+        write("edward-teach-q213518.json", TEACH);
+        write("anne-bonny-1697.json", BONNY);
+        write("julius-caesar-q1048.json", CAESAR);
+        importer.importFrom(directory);
+        UUID teachId = repository.findByWikidataId("Q213518").orElseThrow().getId();
+        UUID bonnyId = idOf("Anne Bonny");
+        UUID caesarId = repository.findByWikidataId("Q1048").orElseThrow().getId();
+
+        write("edward-teach-q213518.json", TEACH.replace("1680", "1681"));
+        Files.delete(directory.resolve("anne-bonny-1697.json"));
+        importer.importFrom(directory);
+
+        assertThat(history.of(teachId)).extracting(PersonRevision::getChangeType)
+                .containsExactly(ChangeType.CREATED, ChangeType.UPDATED);
+        assertThat(history.of(bonnyId)).extracting(PersonRevision::getChangeType)
+                .containsExactly(ChangeType.CREATED, ChangeType.DELETED);
+        assertThat(history.of(caesarId)).extracting(PersonRevision::getChangeType)
+                .containsExactly(ChangeType.CREATED);
+        assertThat(revisions.findAll()).extracting(PersonRevision::getSource).containsOnly(ChangeSource.IMPORT);
+        assertThat(history.of(teachId).getLast().getSnapshot()).contains("1681");
+        assertThat(history.of(bonnyId).getLast().getSnapshot()).contains("Anne Bonny");
+    }
+
     /** Keeps a person's id when a Wikidata id is added to its file, since it is still the same person. */
     @Test
     void recognisesPersonWhenWikidataIdIsAdded() throws IOException {
@@ -158,6 +202,7 @@ class PersonImporterTest {
                             list -> assertThat(list).singleElement().asString().startsWith("gender:"));
                 });
         assertThat(repository.findAll()).extracting(Person::getName).containsExactly("Already stored");
+        assertThat(revisions.count()).isZero();
     }
 
     /** Reports two files that describe the same person, since the database could not hold both. */
@@ -180,6 +225,14 @@ class PersonImporterTest {
                 .isThrownBy(() -> importer.importFrom(directory.resolve("missing")))
                 .withMessage("The data folder " + directory.resolve("missing") + " does not exist");
         assertThat(repository.count()).isEqualTo(1);
+    }
+
+    /** Returns the id of the stored person with the given name. */
+    private UUID idOf(String name) {
+        return repository.findAll().stream()
+                .filter(person -> person.getName().equals(name))
+                .findFirst().orElseThrow()
+                .getId();
     }
 
     /** Writes a data file into the test folder. */
