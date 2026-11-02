@@ -34,7 +34,7 @@ jobs:
         if: always()
         uses: mikepenz/action-junit-report@v6
         with:
-          report_paths: '**/target/surefire-reports/TEST-*.xml'
+          report_paths: '**/target/*-reports/TEST-*.xml'
           include_passed: true
 
       - name: Upload raw test results
@@ -42,5 +42,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: test-results
-          path: '**/target/surefire-reports/'
+          path: |
+            **/target/surefire-reports/
+            **/target/failsafe-reports/
           retention-days: 14

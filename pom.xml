@@ -141,6 +141,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Runs the *IT tests, which call the running application over HTTP, after the unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+
             <!-- Contract-first: API interfaces and DTOs are generated from openapi.yaml on every build -->
             <plugin>
                 <groupId>org.openapitools</groupId>
