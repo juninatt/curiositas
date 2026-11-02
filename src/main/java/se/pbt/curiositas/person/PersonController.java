@@ -1,6 +1,7 @@
 package se.pbt.curiositas.person;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +19,9 @@ import java.util.regex.Pattern;
 /**
  * Serves the person endpoints described in the OpenAPI contract. Paths, parameters and models
  * come from the generated {@link PersonsApi}, so this class cannot drift from the contract.
+ *
+ * <p>Every successful response is sent as {@code application/json}, even to a client that only
+ * accepts {@code application/problem+json}, so a result is never labelled as an error.
  */
 @RestController
 public class PersonController implements PersonsApi {
@@ -42,7 +46,9 @@ public class PersonController implements PersonsApi {
     /** Returns one page of persons, ordered by name. */
     @Override
     public ResponseEntity<PersonPageDto> listPersons(Integer page, Integer size) {
-        return ResponseEntity.ok(PersonMapper.toDto(service.list(page, size)));
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(PersonMapper.toDto(service.list(page, size)));
     }
 
     /** Returns one person, with its version as ETag so a later replacement can detect conflicts. */
@@ -51,6 +57,7 @@ public class PersonController implements PersonsApi {
         Person person = service.get(id);
         return ResponseEntity.ok()
                 .eTag(eTag(person))
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(PersonMapper.toDto(person));
     }
 
@@ -67,6 +74,7 @@ public class PersonController implements PersonsApi {
                 .toUri();
         return ResponseEntity.created(location)
                 .eTag(eTag(person))
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(PersonMapper.toDto(person));
     }
 
@@ -80,6 +88,7 @@ public class PersonController implements PersonsApi {
         Person person = service.replace(id, expectedVersion, stored -> PersonMapper.copyInput(personInputDto, stored));
         return ResponseEntity.ok()
                 .eTag(eTag(person))
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(PersonMapper.toDto(person));
     }
 
