@@ -65,10 +65,13 @@ public class PersonService {
      *
      * @param id the id of the person
      * @return the person
-     * @throws PersonNotFoundException if no person has that id
+     * @throws PersonDeletedException  if the person has been deleted
+     * @throws PersonNotFoundException if no person with that id has ever existed
      */
     public Person get(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+        return repository.findById(id).orElseThrow(() -> history.deletedAt(id)
+                .<RuntimeException>map(deletedAt -> new PersonDeletedException(id, deletedAt))
+                .orElseGet(() -> new PersonNotFoundException(id)));
     }
 
     /**
@@ -113,7 +116,8 @@ public class PersonService {
      * @param expectedVersion the version the client read before making its change
      * @param changes         applies the new data to the person; may reject it
      * @return the updated person with its new version
-     * @throws PersonNotFoundException  if no person has that id
+     * @throws PersonDeletedException   if the person has been deleted
+     * @throws PersonNotFoundException  if no person with that id has ever existed
      * @throws PersonChangedException   if the person is no longer at the expected version
      * @throws DuplicatePersonException if the changes would make the person a duplicate of another
      */
@@ -137,7 +141,8 @@ public class PersonService {
      * Deletes a person. Its history is kept, including the person as it was before the deletion.
      *
      * @param id the id of the person
-     * @throws PersonNotFoundException if no person has that id
+     * @throws PersonDeletedException  if the person has already been deleted
+     * @throws PersonNotFoundException if no person with that id has ever existed
      */
     @Transactional
     public void delete(UUID id) {

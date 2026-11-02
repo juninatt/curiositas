@@ -82,7 +82,7 @@ class PersonErrorsIT extends ApiTestBase {
         assertUnchanged(id);
     }
 
-    /** Answers 404 for every operation on a person that does not exist. */
+    /** Answers 404 for every operation on a person that has never existed. */
     @ParameterizedTest
     @ValueSource(strings = {"GET", "PUT", "DELETE"})
     void answersNotFoundForUnknownPerson(String method) {
@@ -93,6 +93,26 @@ class PersonErrorsIT extends ApiTestBase {
                 .contentType(PROBLEM_JSON)
                 .body("status", equalTo(404))
                 .body("detail", containsString(unknownId));
+    }
+
+    /**
+     * Answers 410 for every operation on a deleted person, pointing to its history, so a client
+     * knows the id was valid and can remove its own copy.
+     */
+    @ParameterizedTest
+    @ValueSource(strings = {"GET", "PUT", "DELETE"})
+    void answersGoneForDeletedPerson(String method) {
+        String id = createTeach();
+        admin().when().delete("/persons/{id}", id)
+                .then().statusCode(204);
+
+        send(admin().header("If-Match", "\"0\""), method, id)
+                .then().statusCode(410)
+                .contentType(PROBLEM_JSON)
+                .body("status", equalTo(410))
+                .body("detail", containsString("/api/v1/persons/" + id + "/revisions"));
+
+        assertNumberOfPersons(0);
     }
 
     /** Answers 409 naming the existing person when the same person is created twice, and stores only one. */

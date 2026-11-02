@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,6 +20,14 @@ public interface PersonRevisionRepository extends JpaRepository<PersonRevision, 
      * @return the revisions, or an empty list if the person never existed
      */
     List<PersonRevision> findByPersonIdOrderByRevision(UUID personId);
+
+    /**
+     * Finds the latest revision of a person.
+     *
+     * @param personId the id of the person, which may have been deleted
+     * @return the latest revision, or nothing if the person never existed
+     */
+    Optional<PersonRevision> findFirstByPersonIdOrderByRevisionDesc(UUID personId);
 
     /**
      * Finds the number of the latest revision of a person.

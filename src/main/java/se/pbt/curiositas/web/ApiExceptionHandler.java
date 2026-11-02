@@ -19,6 +19,7 @@ import se.pbt.curiositas.api.model.FieldErrorDto;
 import se.pbt.curiositas.person.DuplicatePersonException;
 import se.pbt.curiositas.person.InvalidPersonException;
 import se.pbt.curiositas.person.PersonChangedException;
+import se.pbt.curiositas.person.PersonDeletedException;
 import se.pbt.curiositas.person.PersonNotFoundException;
 import se.pbt.curiositas.json.JsonFieldPath;
 import tools.jackson.databind.DatabindException;
@@ -49,6 +50,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     ProblemDetail handlePersonNotFound(PersonNotFoundException exception) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    /**
+     * Answers 410 Gone when a requested person has been deleted, so a client knows the id was
+     * valid and can remove its own copy of the person.
+     *
+     * @param exception the error naming the deleted person and where its history is
+     * @return the problem description
+     */
+    @ExceptionHandler
+    ProblemDetail handlePersonDeleted(PersonDeletedException exception) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.GONE, exception.getMessage());
     }
 
     /**

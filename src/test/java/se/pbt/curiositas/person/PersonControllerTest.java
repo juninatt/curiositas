@@ -89,6 +89,20 @@ class PersonControllerTest {
                 .hasPathSatisfying("$.detail", detail -> assertThat(detail).asString().contains(ID.toString()));
     }
 
+    /** Answers 410 as Problem Details when the person has been deleted, pointing to its history. */
+    @Test
+    void answersGoneForDeletedPerson() {
+        given(service.get(ID)).willThrow(new PersonDeletedException(ID, StoredPersons.STORED_AT));
+
+        assertThat(mvc.get().uri("/api/v1/persons/{id}", ID))
+                .hasStatus(HttpStatus.GONE)
+                .hasContentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON)
+                .bodyJson()
+                .hasPathSatisfying("$.status", status -> assertThat(status).asNumber().isEqualTo(410))
+                .hasPathSatisfying("$.detail", detail -> assertThat(detail).asString()
+                        .contains("/api/v1/persons/" + ID + "/revisions"));
+    }
+
     /** Answers 400 as Problem Details when the id is not a UUID. */
     @Test
     void answersBadRequestForMalformedId() {

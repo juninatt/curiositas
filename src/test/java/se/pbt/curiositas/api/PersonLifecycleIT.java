@@ -78,7 +78,7 @@ class PersonLifecycleIT extends ApiTestBase {
                 .then().statusCode(204);
 
         client().when().get("/persons/{id}", id)
-                .then().statusCode(404);
+                .then().statusCode(410);
         client().when().get("/persons")
                 .then().statusCode(200)
                 .body("content", empty())

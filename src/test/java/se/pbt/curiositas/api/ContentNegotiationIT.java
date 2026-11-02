@@ -64,7 +64,7 @@ class ContentNegotiationIT extends ApiTestBase {
                 .when().delete("/persons/{id}", id)
                 .then().statusCode(204);
         client().when().get("/persons/{id}", id)
-                .then().statusCode(404);
+                .then().statusCode(410);
     }
 
     /** Answers 406 as Problem Details when the client accepts neither JSON nor Problem Details. */

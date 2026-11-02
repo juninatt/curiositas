@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -68,6 +69,18 @@ public class PersonHistory {
      */
     public List<PersonRevision> of(UUID personId) {
         return revisions.findByPersonIdOrderByRevision(personId);
+    }
+
+    /**
+     * Returns when a person was deleted, if it was.
+     *
+     * @param personId the id of the person
+     * @return the time of the deletion, or nothing if the person exists or never existed
+     */
+    public Optional<Instant> deletedAt(UUID personId) {
+        return revisions.findFirstByPersonIdOrderByRevisionDesc(personId)
+                .filter(latest -> latest.getChangeType() == ChangeType.DELETED)
+                .map(PersonRevision::getChangedAt);
     }
 
     /**

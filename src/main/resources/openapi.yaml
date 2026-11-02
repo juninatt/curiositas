@@ -109,6 +109,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '406':
           $ref: '#/components/responses/NotAcceptable'
+        '410':
+          $ref: '#/components/responses/Gone'
     put:
       tags: [ Persons ]
       operationId: replacePerson
@@ -146,6 +148,8 @@ paths:
           $ref: '#/components/responses/NotAcceptable'
         '409':
           $ref: '#/components/responses/Conflict'
+        '410':
+          $ref: '#/components/responses/Gone'
         '412':
           $ref: '#/components/responses/PreconditionFailed'
         '422':
@@ -169,6 +173,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '406':
           $ref: '#/components/responses/NotAcceptable'
+        '410':
+          $ref: '#/components/responses/Gone'
 
   /persons/{id}/revisions:
     parameters:
@@ -266,7 +272,7 @@ components:
           schema:
             $ref: '#/components/schemas/Problem'
     NotFound:
-      description: No person with that id exists
+      description: No person with that id has ever existed
       content:
         application/problem+json:
           schema:
@@ -283,6 +289,14 @@ components:
       description: |
         None of the media types in the `Accept` header can be sent; accept `application/json`
         for data and `application/problem+json` for errors
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    Gone:
+      description: |
+        The person has been deleted. Its history can still be read at
+        `/persons/{id}/revisions`; clients keeping a copy of the data should remove the person.
       content:
         application/problem+json:
           schema:

@@ -11,6 +11,7 @@ import se.pbt.curiositas.date.HistoricalDate;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -92,7 +93,7 @@ class PersonHistoryTest {
         service.delete(id);
         startNewRequest();
 
-        assertThatExceptionOfType(PersonNotFoundException.class).isThrownBy(() -> service.get(id));
+        assertThatExceptionOfType(PersonDeletedException.class).isThrownBy(() -> service.get(id));
         assertThat(history.of(id)).extracting(PersonRevision::getChangeType)
                 .containsExactly(ChangeType.CREATED, ChangeType.DELETED);
         PersonRevision deletion = history.of(id).getLast();
@@ -148,6 +149,27 @@ class PersonHistoryTest {
 
         assertThat(history.of(unknown)).isEmpty();
         assertThatExceptionOfType(PersonNotFoundException.class).isThrownBy(() -> service.revisions(unknown));
+    }
+
+    /**
+     * Tells a deleted person apart from one that never existed for every operation, naming when
+     * it was deleted and where its history is.
+     */
+    @Test
+    void reportsDeletedPersonAsDeleted() {
+        UUID id = service.create(teach()).getId();
+        service.delete(id);
+        startNewRequest();
+        Instant deletedAt = history.of(id).getLast().getChangedAt();
+
+        assertThatExceptionOfType(PersonDeletedException.class).isThrownBy(() -> service.get(id))
+                .withMessageContaining(id.toString())
+                .withMessageContaining(deletedAt.toString())
+                .withMessageContaining("/api/v1/persons/" + id + "/revisions");
+        assertThatExceptionOfType(PersonDeletedException.class)
+                .isThrownBy(() -> service.replace(id, 0, person -> person.setName("Edward Thatch")));
+        assertThatExceptionOfType(PersonDeletedException.class).isThrownBy(() -> service.delete(id));
+        assertThat(history.of(id)).hasSize(2);
     }
 
     /** Lets the service list the revisions of a deleted person, since its history is kept. */
