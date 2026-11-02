@@ -24,6 +24,8 @@
         <swagger-parser.version>2.1.48</swagger-parser.version>
         <openapi-generator.version>7.26.0</openapi-generator.version>
         <swagger-ui.version>5.33.1</swagger-ui.version>
+        <rest-assured.version>6.3.0</rest-assured.version>
+        <openapi-request-validator.version>3.0.0</openapi-request-validator.version>
     </properties>
 
     <dependencies>
@@ -130,6 +132,19 @@
             <groupId>io.swagger.parser.v3</groupId>
             <artifactId>swagger-parser</artifactId>
             <version>${swagger-parser.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- API tests over real HTTP, with every request and response checked against openapi.yaml -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.oai</groupId>
+            <artifactId>openapi-request-validator-restassured</artifactId>
+            <version>${openapi-request-validator.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

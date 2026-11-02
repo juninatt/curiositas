@@ -32,8 +32,8 @@ Wikidata, the revision history and synchronisation are planned; see the
 - Java 21, Spring Boot 4.1, Spring Data JPA, Spring Security
 - PostgreSQL 18 with Flyway migrations
 - Contract-first REST API (OpenAPI), errors as RFC 9457 Problem Details, Swagger UI
-- Tests: JUnit 5, AssertJ, Testcontainers
-- Planned: REST Assured, contract validation against the OpenAPI spec
+- Tests: JUnit 5, AssertJ, Testcontainers, and REST Assured with every request and response
+  validated against the OpenAPI contract
 
 ## Getting started
 
@@ -68,6 +68,10 @@ Run all tests (Docker must be running, the tests use a real PostgreSQL container
 ```bash
 ./mvnw verify
 ```
+
+The unit and component tests (`*Test`) run first. The API tests (`*IT`) run after them: they
+start the whole application and call it over real HTTP, like any client, and fail if a request
+or response differs from the contract.
 
 On Windows in PowerShell, use `.\mvnw.cmd` instead of `./mvnw`, for example
 `.\mvnw.cmd spring-boot:run`.
