@@ -12,6 +12,7 @@ import se.pbt.curiositas.api.model.PersonDto;
 import se.pbt.curiositas.api.model.PersonInputDto;
 import se.pbt.curiositas.api.model.PersonPageDto;
 import se.pbt.curiositas.api.model.PersonRevisionListDto;
+import se.pbt.curiositas.web.DatasetETag;
 
 import java.net.URI;
 import java.util.UUID;
@@ -35,20 +36,29 @@ public class PersonController implements PersonsApi {
     private static final Pattern VERSION_ETAG = Pattern.compile("^\"(\\d{1,18})\"$");
 
     private final PersonService service;
+    private final DatasetETag datasetETag;
 
     /**
      * Creates the controller.
      *
-     * @param service reads and changes persons
+     * @param service     reads and changes persons
+     * @param datasetETag makes the ETags of responses that show many persons
      */
-    public PersonController(PersonService service) {
+    public PersonController(PersonService service, DatasetETag datasetETag) {
         this.service = service;
+        this.datasetETag = datasetETag;
     }
 
-    /** Returns one page of persons, ordered by name. */
+    /**
+     * Returns one page of persons, ordered by name, tagged with the version of the dataset. The
+     * version is read first, so the tag is never newer than the page; Spring answers 304 when the
+     * client already has it.
+     */
     @Override
-    public ResponseEntity<PersonPageDto> listPersons(Integer page, Integer size) {
+    public ResponseEntity<PersonPageDto> listPersons(Integer page, Integer size, String ifNoneMatch) {
+        String eTag = datasetETag.of(service.version());
         return ResponseEntity.ok()
+                .eTag(eTag)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(PersonMapper.toDto(service.list(page, size)));
     }

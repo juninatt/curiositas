@@ -14,6 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import se.pbt.curiositas.security.SecurityConfig;
+import se.pbt.curiositas.web.DatasetETag;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,8 +36,8 @@ import static se.pbt.curiositas.person.StoredPersons.storedRevision;
  * responses. The service is replaced by a mock, so these tests run without a database.
  */
 @WebMvcTest(PersonController.class)
-@Import(SecurityConfig.class)
-@TestPropertySource(properties = "curiositas.admin.password=test-password")
+@Import({SecurityConfig.class, DatasetETag.class})
+@TestPropertySource(properties = {"curiositas.admin.password=test-password", "curiositas.release=test"})
 class PersonControllerTest {
 
     private static final UUID ID = UUID.fromString("7f1c8a52-0d1e-4f4b-9a7e-3c2b1d0e9f8a");
@@ -173,6 +174,25 @@ class PersonControllerTest {
                 .hasPathSatisfying("$.page", page -> assertThat(page).asNumber().isEqualTo(1))
                 .hasPathSatisfying("$.totalElements", total -> assertThat(total).asNumber().isEqualTo(11))
                 .hasPathSatisfying("$.totalPages", pages -> assertThat(pages).asNumber().isEqualTo(2));
+    }
+
+    /**
+     * Tags a page with the version of the dataset and of the application, and answers 304 when the
+     * client already has that version.
+     */
+    @Test
+    void tagsPageWithDatasetVersion() {
+        given(service.version()).willReturn(57L);
+        given(service.list(0, 20)).willReturn(new PageImpl<>(List.of(), PageRequest.of(0, 20), 0));
+
+        assertThat(mvc.get().uri("/api/v1/persons"))
+                .hasStatusOk()
+                .hasHeader("ETag", "\"57-test\"");
+        assertThat(mvc.get().uri("/api/v1/persons").header("If-None-Match", "\"57-test\""))
+                .hasStatus(HttpStatus.NOT_MODIFIED)
+                .body().isEmpty();
+        assertThat(mvc.get().uri("/api/v1/persons").header("If-None-Match", "\"56-test\""))
+                .hasStatusOk();
     }
 
     /** Uses page 0 and 20 persons per page when the client does not ask for anything else. */

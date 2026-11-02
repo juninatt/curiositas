@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import se.pbt.curiositas.person.PersonController;
 import se.pbt.curiositas.person.PersonService;
 import se.pbt.curiositas.person.StoredPersons;
+import se.pbt.curiositas.web.DatasetETag;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
  * its content must not be changed by strangers.
  */
 @WebMvcTest(PersonController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, DatasetETag.class})
 @TestPropertySource(properties = "curiositas.admin.password=test-password")
 class WriteSecurityTest {
 

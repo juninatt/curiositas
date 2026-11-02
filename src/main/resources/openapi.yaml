@@ -40,17 +40,25 @@ paths:
       tags: [ Persons ]
       operationId: listPersons
       summary: List persons
-      description: Returns one page of persons, ordered by name.
+      description: |
+        Returns one page of persons, ordered by name. Send the ETag of an earlier response in
+        `If-None-Match` to get 304 Not Modified instead, when nothing in the dataset has changed.
       parameters:
         - $ref: '#/components/parameters/Page'
         - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/IfNoneMatch'
       responses:
         '200':
           description: One page of persons
+          headers:
+            ETag:
+              $ref: '#/components/headers/DatasetETag'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonPage'
+        '304':
+          $ref: '#/components/responses/DatasetNotModified'
         '400':
           $ref: '#/components/responses/BadRequest'
         '406':
@@ -199,13 +207,22 @@ paths:
         Every person as it is now, ordered by name, together with the version of the dataset they
         belong to. The persons and the version are read at the same moment, so a client that
         loads the snapshot and then asks for the changes after its version misses nothing.
+        Send the ETag of an earlier response in `If-None-Match` to get 304 Not Modified instead,
+        when nothing has changed.
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
       responses:
         '200':
           description: The whole dataset
+          headers:
+            ETag:
+              $ref: '#/components/headers/DatasetETag'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DatasetSnapshot'
+        '304':
+          $ref: '#/components/responses/DatasetNotModified'
         '406':
           $ref: '#/components/responses/NotAcceptable'
 
@@ -333,6 +350,13 @@ components:
       example: '"3"'
 
   headers:
+    DatasetETag:
+      description: |
+        The version of the dataset and of the application, to send back in `If-None-Match`. It
+        changes with every change to the data and with every release.
+      schema:
+        type: string
+      example: '"57-0.7.0"'
     ETag:
       description: The current version of the person, to send back in `If-Match`
       schema:
@@ -345,6 +369,11 @@ components:
         format: uri
 
   responses:
+    DatasetNotModified:
+      description: Nothing has changed since the response with this ETag
+      headers:
+        ETag:
+          $ref: '#/components/headers/DatasetETag'
     BadRequest:
       description: The request could not be read, for example malformed JSON or an invalid parameter
       content:

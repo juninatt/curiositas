@@ -13,6 +13,7 @@ import se.pbt.curiositas.person.ChangeType;
 import se.pbt.curiositas.person.Gender;
 import se.pbt.curiositas.person.Person;
 import se.pbt.curiositas.security.SecurityConfig;
+import se.pbt.curiositas.web.DatasetETag;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,8 +29,8 @@ import static se.pbt.curiositas.person.StoredPersons.storedRevision;
  * as the person endpoints, and the paging the contract describes. The service is replaced by a mock.
  */
 @WebMvcTest(DatasetController.class)
-@Import(SecurityConfig.class)
-@TestPropertySource(properties = "curiositas.admin.password=test-password")
+@Import({SecurityConfig.class, DatasetETag.class})
+@TestPropertySource(properties = {"curiositas.admin.password=test-password", "curiositas.release=test"})
 class DatasetControllerTest {
 
     @Autowired
@@ -53,6 +54,22 @@ class DatasetControllerTest {
                         .containsExactly("Anne Bonny"))
                 .hasPathSatisfying("$.persons[0].createdAt", time -> assertThat(time).asString()
                         .isEqualTo("2026-10-09T12:00:00Z"));
+    }
+
+    /** Tags the snapshot with exactly its version, and answers 304 when the client already has it. */
+    @Test
+    void tagsSnapshotWithItsVersion() {
+        given(service.snapshot()).willReturn(new DatasetService.Snapshot(57, List.of()));
+
+        assertThat(mvc.get().uri("/api/v1/snapshot"))
+                .hasStatusOk()
+                .hasHeader("ETag", "\"57-test\"");
+        assertThat(mvc.get().uri("/api/v1/snapshot").header("If-None-Match", "\"57-test\""))
+                .hasStatus(HttpStatus.NOT_MODIFIED)
+                .body().isEmpty();
+        assertThat(mvc.get().uri("/api/v1/snapshot").header("If-None-Match", "\"57-0.1.0\""))
+                .as("a tag from another release")
+                .hasStatusOk();
     }
 
     /** Returns the changes with the version reached and whether more wait; a deletion only names the person. */

@@ -106,8 +106,13 @@ curl -u admin:choose-a-password -X POST http://localhost:8080/api/v1/persons \
 The response adds derived values that are calculated on every request and never stored, such as
 `"display": "1680 ± 5"` for the birth and `"ageAtDeath": {"min": 32, "max": 43}`.
 
+Every read that can be cached has an `ETag`: a person its version, a page of persons and the
+snapshot the version of the dataset and of the application. Sending it back in `If-None-Match`
+gives `304 Not Modified` without a body until something changes.
+
 | Status | When |
 |---|---|
+| 304 | Nothing has changed since the response with the `ETag` in `If-None-Match` |
 | 400 | The request cannot be read, for example malformed JSON or an invalid parameter |
 | 401 | A write without valid credentials |
 | 404 | No person with that id has ever existed |

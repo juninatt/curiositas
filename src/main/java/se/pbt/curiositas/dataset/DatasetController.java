@@ -13,6 +13,7 @@ import se.pbt.curiositas.api.model.RecordTypeDto;
 import se.pbt.curiositas.person.ChangeType;
 import se.pbt.curiositas.person.PersonMapper;
 import se.pbt.curiositas.person.PersonRevision;
+import se.pbt.curiositas.web.DatasetETag;
 
 import java.time.ZoneOffset;
 
@@ -24,14 +25,17 @@ import java.time.ZoneOffset;
 public class DatasetController implements DatasetApi {
 
     private final DatasetService service;
+    private final DatasetETag datasetETag;
 
     /**
      * Creates the controller.
      *
-     * @param service reads the whole dataset
+     * @param service     reads the whole dataset
+     * @param datasetETag makes the ETag of the snapshot
      */
-    public DatasetController(DatasetService service) {
+    public DatasetController(DatasetService service, DatasetETag datasetETag) {
         this.service = service;
+        this.datasetETag = datasetETag;
     }
 
     /**
@@ -59,11 +63,15 @@ public class DatasetController implements DatasetApi {
                 .person(revision.getChangeType() == ChangeType.DELETED ? null : PersonMapper.toDto(revision));
     }
 
-    /** Returns every person with the version of the dataset they belong to. */
+    /**
+     * Returns every person with the version of the dataset they belong to, tagged with exactly that
+     * version. Spring answers 304 when the client already has it.
+     */
     @Override
-    public ResponseEntity<DatasetSnapshotDto> getSnapshot() {
+    public ResponseEntity<DatasetSnapshotDto> getSnapshot(String ifNoneMatch) {
         DatasetService.Snapshot snapshot = service.snapshot();
         return ResponseEntity.ok()
+                .eTag(datasetETag.of(snapshot.version()))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new DatasetSnapshotDto(snapshot.version(),
                         snapshot.persons().stream().map(PersonMapper::toDto).toList()));

@@ -7,3 +7,8 @@ spring:
     hibernate:
       # Flyway owns the schema; Hibernate only verifies that entities match it.
       ddl-auto: validate
+
+curiositas:
+  # The version of this release, filled in from pom.xml by the build. Part of the ETags of the
+  # whole dataset, so a release that changes how data is shown is never answered with 304.
+  release: '@project.version@'

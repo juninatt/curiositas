@@ -52,6 +52,15 @@ public class PersonService {
     }
 
     /**
+     * Returns the version of the dataset, which changes with every change to any person.
+     *
+     * @return the sequence number of the latest change, or 0 if nothing has changed yet
+     */
+    public long version() {
+        return history.version();
+    }
+
+    /**
      * Returns every person, for exporting them all at once.
      *
      * @return all persons, ordered by name
