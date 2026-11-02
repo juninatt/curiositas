@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import({TestcontainersConfiguration.class, PersonService.class})
+@Import({TestcontainersConfiguration.class, PersonService.class, PersonHistory.class})
 class PersonServiceTest {
 
     @Autowired

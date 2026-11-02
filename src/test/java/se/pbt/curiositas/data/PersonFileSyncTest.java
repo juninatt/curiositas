@@ -15,7 +15,9 @@ import se.pbt.curiositas.TestcontainersConfiguration;
 import se.pbt.curiositas.date.HistoricalDate;
 import se.pbt.curiositas.person.Gender;
 import se.pbt.curiositas.person.Person;
+import se.pbt.curiositas.person.PersonHistory;
 import se.pbt.curiositas.person.PersonRepository;
+import se.pbt.curiositas.person.PersonRevisionRepository;
 import se.pbt.curiositas.person.PersonService;
 
 import java.io.IOException;
@@ -39,8 +41,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @DataJpaTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import({TestcontainersConfiguration.class, DataConfig.class, PersonService.class, PersonExporter.class,
-        PersonFileSync.class})
+@Import({TestcontainersConfiguration.class, DataConfig.class, PersonService.class, PersonHistory.class,
+        PersonExporter.class, PersonFileSync.class})
 class PersonFileSyncTest {
 
     private static final Path DATA = createTempDirectory();
@@ -52,6 +54,9 @@ class PersonFileSyncTest {
     @Autowired
     private PersonRepository repository;
 
+    @Autowired
+    private PersonRevisionRepository revisions;
+
     /** Points the data folder to a temporary folder and switches the sync on. */
     @DynamicPropertySource
     static void dataFolder(DynamicPropertyRegistry registry) {
@@ -59,10 +64,11 @@ class PersonFileSyncTest {
         registry.add("curiositas.data.sync", () -> "true");
     }
 
-    /** Removes the persons and files a test left behind, since nothing is rolled back. */
+    /** Removes the persons, revisions and files a test left behind, since nothing is rolled back. */
     @AfterEach
     void cleanUp() throws IOException {
         repository.deleteAll();
+        revisions.deleteAll();
         FileSystemUtils.deleteRecursively(PERSONS);
     }
 
@@ -96,7 +102,10 @@ class PersonFileSyncTest {
         assertThat(fileNames()).isEmpty();
     }
 
-    /** Rolls the change back when the file cannot be written, so the database never gets ahead of the files. */
+    /**
+     * Rolls the change and its revision back when the file cannot be written, so neither the
+     * database nor the history ever gets ahead of the files.
+     */
     @Test
     void rollsBackWhenFileCannotBeWritten() throws IOException {
         Files.createDirectories(DATA);
@@ -104,6 +113,7 @@ class PersonFileSyncTest {
 
         assertThatExceptionOfType(UncheckedIOException.class).isThrownBy(() -> service.create(teach()));
         assertThat(repository.count()).isZero();
+        assertThat(revisions.count()).isZero();
     }
 
     /** Creates Edward Teach, born around 1680. */

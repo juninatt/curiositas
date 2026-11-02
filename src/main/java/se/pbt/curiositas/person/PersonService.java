@@ -13,7 +13,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Reads and changes persons. Keeps transactions and business rules out of the web layer.
+ * Reads and changes persons. Keeps transactions and business rules out of the web layer, and
+ * records every change in the {@link PersonHistory}.
  */
 @Service
 @Transactional(readOnly = true)
@@ -23,16 +24,19 @@ public class PersonService {
     private static final Sort BY_NAME = Sort.by("name").and(Sort.by("id"));
 
     private final PersonRepository repository;
+    private final PersonHistory history;
     private final ApplicationEventPublisher events;
 
     /**
      * Creates the service.
      *
      * @param repository where persons are stored
+     * @param history    records every change, in the same transaction
      * @param events     announces changes, so the data files can follow them
      */
-    public PersonService(PersonRepository repository, ApplicationEventPublisher events) {
+    public PersonService(PersonRepository repository, PersonHistory history, ApplicationEventPublisher events) {
         this.repository = repository;
+        this.history = history;
         this.events = events;
     }
 
@@ -79,6 +83,7 @@ public class PersonService {
     public Person create(Person person) {
         rejectDuplicate(person);
         Person created = repository.saveAndFlush(person);
+        history.created(created, ChangeSource.API);
         events.publishEvent(new PersonsChangedEvent());
         return created;
     }
@@ -86,7 +91,8 @@ public class PersonService {
     /**
      * Replaces a person's data, but only if nobody has changed the person since the client read
      * it. The version is checked here, and again by the database when writing, which also catches
-     * a change made between those two moments.
+     * a change made between those two moments. A replacement with the same data changes nothing,
+     * so it keeps the version and adds no revision.
      *
      * @param id              the id of the person
      * @param expectedVersion the version the client read before making its change
@@ -105,22 +111,24 @@ public class PersonService {
         changes.accept(person);
         rejectDuplicate(person);
         Person replaced = repository.saveAndFlush(person);
-        events.publishEvent(new PersonsChangedEvent());
+        if (replaced.getVersion() != expectedVersion) {
+            history.updated(replaced, ChangeSource.API);
+            events.publishEvent(new PersonsChangedEvent());
+        }
         return replaced;
     }
 
     /**
-     * Deletes a person permanently.
+     * Deletes a person. Its history is kept, including the person as it was before the deletion.
      *
      * @param id the id of the person
      * @throws PersonNotFoundException if no person has that id
      */
     @Transactional
     public void delete(UUID id) {
-        if (!repository.existsById(id)) {
-            throw new PersonNotFoundException(id);
-        }
-        repository.deleteById(id);
+        Person person = get(id);
+        history.deleted(person, ChangeSource.API);
+        repository.delete(person);
         events.publishEvent(new PersonsChangedEvent());
     }
 
