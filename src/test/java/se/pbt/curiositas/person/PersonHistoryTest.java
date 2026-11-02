@@ -48,6 +48,7 @@ class PersonHistoryTest {
             assertThat(revision.getChangeType()).isEqualTo(ChangeType.CREATED);
             assertThat(revision.getSource()).isEqualTo(ChangeSource.API);
             assertThat(revision.getChangedAt()).isEqualTo(created.getUpdatedAt());
+            assertThat(revision.getPersonCreatedAt()).isEqualTo(created.getCreatedAt());
             assertThat(snapshotOf(revision)).isEqualTo(asSnapshot(created));
         });
     }
@@ -69,6 +70,7 @@ class PersonHistoryTest {
         assertThat(snapshotOf(revisions.get(1)).has("birthPlace")).isFalse();
         assertThat(snapshotOf(revisions.get(2))).isEqualTo(asSnapshot(replaced));
         assertThat(revisions.get(2).getChangedAt()).isEqualTo(replaced.getUpdatedAt());
+        assertThat(revisions).extracting(PersonRevision::getPersonCreatedAt).containsOnly(created.getCreatedAt());
     }
 
     /** Adds no revision when a replacement sends the same data, since nothing changed. */

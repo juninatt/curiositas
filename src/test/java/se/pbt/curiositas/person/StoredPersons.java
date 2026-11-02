@@ -46,7 +46,7 @@ public final class StoredPersons {
     public static PersonRevision storedRevision(long sequenceNumber, Person person, int revision,
                                                 ChangeType changeType) {
         PersonRevision stored = new PersonRevision(person.getId(), revision, changeType, ChangeSource.API,
-                STORED_AT, PersonSnapshots.of(person));
+                STORED_AT, STORED_AT, PersonSnapshots.of(person));
         ReflectionTestUtils.setField(stored, "sequenceNumber", sequenceNumber);
         return stored;
     }

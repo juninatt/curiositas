@@ -131,6 +131,6 @@ public class PersonHistory {
         takeTurnToWrite();
         int revision = revisions.findLatestRevision(person.getId()) + 1;
         revisions.save(new PersonRevision(person.getId(), revision, changeType, source, changedAt,
-                PersonSnapshots.of(person)));
+                person.getCreatedAt(), PersonSnapshots.of(person)));
     }
 }

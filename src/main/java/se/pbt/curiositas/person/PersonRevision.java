@@ -43,6 +43,9 @@ public class PersonRevision {
 
     private Instant changedAt;
 
+    /** When the person was first stored, so the person can be shown exactly as the API shows it. */
+    private Instant personCreatedAt;
+
     /** The person as JSON, in the same form as the data files. */
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
@@ -55,20 +58,22 @@ public class PersonRevision {
     /**
      * Creates a revision that is not yet stored.
      *
-     * @param personId   the person that changed
-     * @param revision   the number of this change for that person, starting at 1
-     * @param changeType what the change did
-     * @param source     where the change came from
-     * @param changedAt  when the change was made
-     * @param snapshot   the person as JSON, in the same form as the data files
+     * @param personId        the person that changed
+     * @param revision        the number of this change for that person, starting at 1
+     * @param changeType      what the change did
+     * @param source          where the change came from
+     * @param changedAt       when the change was made
+     * @param personCreatedAt when the person was first stored
+     * @param snapshot        the person as JSON, in the same form as the data files
      */
     PersonRevision(UUID personId, int revision, ChangeType changeType, ChangeSource source, Instant changedAt,
-                   String snapshot) {
+                   Instant personCreatedAt, String snapshot) {
         this.personId = personId;
         this.revision = revision;
         this.changeType = changeType;
         this.source = source;
         this.changedAt = changedAt;
+        this.personCreatedAt = personCreatedAt;
         this.snapshot = snapshot;
     }
 
@@ -100,6 +105,11 @@ public class PersonRevision {
     /** Returns when the change was made. */
     public Instant getChangedAt() {
         return changedAt;
+    }
+
+    /** Returns when the person was first stored. */
+    public Instant getPersonCreatedAt() {
+        return personCreatedAt;
     }
 
     /** Returns the person as JSON, after the change or, for a deletion, before it. */
