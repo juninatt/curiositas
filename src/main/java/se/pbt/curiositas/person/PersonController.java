@@ -53,9 +53,12 @@ public class PersonController implements PersonsApi {
                 .body(PersonMapper.toDto(service.list(page, size)));
     }
 
-    /** Returns one person, with its version as ETag so a later replacement can detect conflicts. */
+    /**
+     * Returns one person, with its version as ETag so a later replacement can detect conflicts.
+     * Spring answers 304 when the client already has that version.
+     */
     @Override
-    public ResponseEntity<PersonDto> getPerson(UUID id) {
+    public ResponseEntity<PersonDto> getPerson(UUID id, String ifNoneMatch) {
         Person person = service.get(id);
         return ResponseEntity.ok()
                 .eTag(eTag(person))

@@ -97,6 +97,11 @@ paths:
       tags: [ Persons ]
       operationId: getPerson
       summary: Get a person
+      description: |
+        Send the ETag of an earlier response in `If-None-Match` to get 304 Not Modified instead,
+        when the person has not changed.
+      parameters:
+        - $ref: '#/components/parameters/IfNoneMatch'
       responses:
         '200':
           description: The person
@@ -107,6 +112,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
+        '304':
+          description: The person has not changed since the response with this ETag
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -304,6 +314,14 @@ components:
         minimum: 1
         maximum: 100
         default: 20
+    IfNoneMatch:
+      name: If-None-Match
+      in: header
+      required: false
+      description: The ETag of an earlier response; if nothing has changed, the answer is 304 without a body
+      schema:
+        type: string
+      example: '"3"'
     IfMatch:
       name: If-Match
       in: header

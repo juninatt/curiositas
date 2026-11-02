@@ -62,6 +62,19 @@ class PersonControllerTest {
                 .hasPathSatisfying("$.gender", gender -> assertThat(gender).asString().isEqualTo("MALE"));
     }
 
+    /** Answers 304 without a body when the client already has the current version of the person. */
+    @Test
+    void answersNotModifiedForCurrentVersion() {
+        given(service.get(ID)).willReturn(stored(new Person("Edward Teach", Gender.MALE), ID, 3));
+
+        assertThat(mvc.get().uri("/api/v1/persons/{id}", ID).header("If-None-Match", "\"3\""))
+                .hasStatus(HttpStatus.NOT_MODIFIED)
+                .hasHeader("ETag", "\"3\"")
+                .body().isEmpty();
+        assertThat(mvc.get().uri("/api/v1/persons/{id}", ID).header("If-None-Match", "\"2\""))
+                .hasStatusOk();
+    }
+
     /** Leaves unknown values out of the JSON instead of sending null, as the contract promises. */
     @Test
     void leavesUnknownValuesOutOfJson() {
