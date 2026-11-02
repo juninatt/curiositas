@@ -49,6 +49,8 @@ paths:
                 $ref: '#/components/schemas/PersonPage'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
     post:
       tags: [ Persons ]
       operationId: createPerson
@@ -77,6 +79,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
         '409':
           $ref: '#/components/responses/Conflict'
         '422':
@@ -103,6 +107,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
     put:
       tags: [ Persons ]
       operationId: replacePerson
@@ -136,6 +142,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
         '409':
           $ref: '#/components/responses/Conflict'
         '412':
@@ -159,6 +167,8 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+        '406':
+          $ref: '#/components/responses/NotAcceptable'
 
 components:
   securitySchemes:
@@ -240,6 +250,14 @@ components:
       description: |
         Another person is already registered with the same Wikidata id, or, when there is no
         Wikidata id, with the same name, birth, death and birth country
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotAcceptable:
+      description: |
+        None of the media types in the `Accept` header can be sent; accept `application/json`
+        for data and `application/problem+json` for errors
       content:
         application/problem+json:
           schema:

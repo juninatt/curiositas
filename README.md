@@ -104,6 +104,7 @@ The response adds derived values that are calculated on every request and never 
 | 400 | The request cannot be read, for example malformed JSON or an invalid parameter |
 | 401 | A write without valid credentials |
 | 404 | No person with that id |
+| 406 | The `Accept` header allows neither `application/json` nor `application/problem+json` |
 | 409 | The person already exists: same Wikidata id, or the same name, birth, death and birth country |
 | 412 | The person was changed since the `ETag` in `If-Match` was read |
 | 422 | Readable but invalid data, such as 31 April or a death before the birth, with one error per field |
