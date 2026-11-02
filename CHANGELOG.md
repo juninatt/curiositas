@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.7.0](https://github.com/juninatt/curiositas/compare/v0.6.0...v0.7.0) (2026-11-02)
+
+
+### Features
+
+* **api:** add a change feed for keeping in sync ([d21c49c](https://github.com/juninatt/curiositas/commit/d21c49ca07a806997f120b99f9034fa96b5d9264))
+* **api:** add a snapshot of the whole dataset ([b00410f](https://github.com/juninatt/curiositas/commit/b00410ff2efc2119fd0ec9f45d896acc780be633))
+* **api:** answer 304 not modified for unchanged data ([a2f5e28](https://github.com/juninatt/curiositas/commit/a2f5e28b3cf0c45942f7264530f55999b5e4c314))
+* **person:** keep the creation time of the person in every revision ([97344f1](https://github.com/juninatt/curiositas/commit/97344f1d337ae403521cbb8b3303f44877f2b486))
+* **person:** number changes in the order they are committed ([a457bcc](https://github.com/juninatt/curiositas/commit/a457bccf2edb9d6ff15bb7d2372aaffbe219625d))
+
+
+### Bug Fixes
+
+* **api:** document 304 not modified for an unchanged person ([ad4af20](https://github.com/juninatt/curiositas/commit/ad4af20fdfdbe48df14f3146d69dfa808196d9eb))
+
 ## [0.6.0](https://github.com/juninatt/curiositas/compare/v0.5.1...v0.6.0) (2026-11-02)
 
 

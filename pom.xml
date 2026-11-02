@@ -12,7 +12,7 @@
     <groupId>se.pbt</groupId>
     <artifactId>curiositas</artifactId>
     <!-- Managed by release-please, do not edit by hand. -->
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <name>curiositas</name>
     <description>A curated, versioned dataset of history with honest uncertainty, published through a REST API</description>
     <url>https://github.com/juninatt/Curiositas</url>
