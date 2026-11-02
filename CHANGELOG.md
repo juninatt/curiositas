@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.1](https://github.com/juninatt/curiositas/compare/v0.5.0...v0.5.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **api:** always label successful responses as application/json ([3fd72b7](https://github.com/juninatt/curiositas/commit/3fd72b7a652e3e1547e4623302d505d6c38e883e))
+* **api:** describe problem type and instance as uri references ([647fcb6](https://github.com/juninatt/curiositas/commit/647fcb6476277a121f32f3ffeec1f97e910c4372))
+* **api:** document 406 when no requested media type can be served ([188d713](https://github.com/juninatt/curiositas/commit/188d71314115eda50c86691a90e7c959f934714d))
+* **api:** let any client delete regardless of its accept header ([6412fc3](https://github.com/juninatt/curiositas/commit/6412fc3bf6670cdfdfc2eb1e04926f5ad465c896))
+
 ## [0.5.0](https://github.com/juninatt/Curiositas/compare/v0.4.0...v0.5.0) (2026-10-20)
 
 
