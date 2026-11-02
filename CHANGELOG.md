@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/juninatt/curiositas/compare/v0.5.1...v0.6.0) (2026-11-02)
+
+
+### Features
+
+* **api:** answer 410 gone for deleted persons ([1b5b46e](https://github.com/juninatt/curiositas/commit/1b5b46edd383d3f9fe81d901733d176b3d598550))
+* **api:** show the revisions of a person ([c1aab10](https://github.com/juninatt/curiositas/commit/c1aab10ab8594a43c8a31de67deaa4616e3e9f4a))
+* **data:** record imported changes in the revision log ([3aafa45](https://github.com/juninatt/curiositas/commit/3aafa453f2360cf9683f9960562e452f341f12de))
+* **data:** refuse to start when a person has no history ([0722020](https://github.com/juninatt/curiositas/commit/0722020988d273e43d751e90a6d64a37fa0e06b2))
+* **person:** record every change to a person in a revision log ([724b7c0](https://github.com/juninatt/curiositas/commit/724b7c0a0bd339117f3a121263d6ebba82d2da75))
+
 ## [0.5.1](https://github.com/juninatt/curiositas/compare/v0.5.0...v0.5.1) (2026-11-02)
 
 
