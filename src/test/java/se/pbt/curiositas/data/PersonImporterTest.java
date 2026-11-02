@@ -86,7 +86,7 @@ class PersonImporterTest {
 
         PersonImporter.Result result = importer.importFrom(directory);
 
-        assertThat(result).isEqualTo(new PersonImporter.Result(2, 0, 0, 0));
+        assertThat(result).isEqualTo(new PersonImporter.Result(2, 0, 0, 0, 0));
         Person teach = repository.findByWikidataId("Q213518").orElseThrow();
         assertThat(teach.getBirth()).isEqualTo(new HistoricalDate(1680, null, null, 5));
         assertThat(teach.getAlsoKnownAs()).hasSize(1);
@@ -107,7 +107,7 @@ class PersonImporterTest {
         Files.delete(directory.resolve("anne-bonny-1697.json"));
         PersonImporter.Result result = importer.importFrom(directory);
 
-        assertThat(result).isEqualTo(new PersonImporter.Result(0, 1, 0, 1));
+        assertThat(result).isEqualTo(new PersonImporter.Result(0, 1, 0, 1, 0));
         entityManager.clear();
         assertThat(repository.findAll()).singleElement().satisfies(teach -> {
             assertThat(teach.getId()).isEqualTo(teachId);
@@ -124,7 +124,7 @@ class PersonImporterTest {
 
         PersonImporter.Result result = importer.importFrom(directory);
 
-        assertThat(result).isEqualTo(new PersonImporter.Result(0, 0, 1, 0));
+        assertThat(result).isEqualTo(new PersonImporter.Result(0, 0, 1, 0, 0));
         assertThat(repository.findAll().getFirst().getVersion()).isEqualTo(version);
     }
 
@@ -155,6 +155,32 @@ class PersonImporterTest {
         assertThat(revisions.findAll()).extracting(PersonRevision::getSource).containsOnly(ChangeSource.IMPORT);
         assertThat(history.of(teachId).getLast().getSnapshot()).contains("1681");
         assertThat(history.of(bonnyId).getLast().getSnapshot()).contains("Anne Bonny");
+    }
+
+    /**
+     * Starts the history of persons stored before the history existed, as created by the import,
+     * whether or not their files changed, so every person has a history afterwards.
+     */
+    @Test
+    void startsHistoryOfPersonsStoredWithoutOne() throws IOException {
+        write("edward-teach-q213518.json", TEACH);
+        write("anne-bonny-1697.json", BONNY);
+        importer.importFrom(directory);
+        revisions.deleteAll();
+        UUID teachId = repository.findByWikidataId("Q213518").orElseThrow().getId();
+        UUID bonnyId = idOf("Anne Bonny");
+
+        write("edward-teach-q213518.json", TEACH.replace("1680", "1681"));
+        PersonImporter.Result result = importer.importFrom(directory);
+
+        assertThat(result).isEqualTo(new PersonImporter.Result(0, 1, 1, 0, 2));
+        assertThat(history.of(teachId)).singleElement().satisfies(revision -> {
+            assertThat(revision.getChangeType()).isEqualTo(ChangeType.CREATED);
+            assertThat(revision.getSource()).isEqualTo(ChangeSource.IMPORT);
+            assertThat(revision.getSnapshot()).contains("1681");
+        });
+        assertThat(history.of(bonnyId)).extracting(PersonRevision::getChangeType).containsExactly(ChangeType.CREATED);
+        assertThat(importer.importFrom(directory)).isEqualTo(new PersonImporter.Result(0, 0, 2, 0, 0));
     }
 
     /** Keeps a person's id when a Wikidata id is added to its file, since it is still the same person. */

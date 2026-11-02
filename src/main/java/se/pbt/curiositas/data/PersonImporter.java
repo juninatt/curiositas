@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
@@ -40,7 +41,8 @@ import java.util.stream.Stream;
  * <p>Persons are matched to their files by the same identity as the duplicate check uses, so a
  * person keeps its id, and with it every link to it, as long as it is recognisably the same person.
  * Every person created, changed or deleted gets a revision with the source {@code IMPORT}; an
- * unchanged person gets none.
+ * unchanged person gets none, unless it has no history yet. Such a person was stored before the
+ * history existed, and the import records it as created, so every person has a history.
  */
 @Component
 public class PersonImporter {
@@ -78,6 +80,7 @@ public class PersonImporter {
         List<PersonFile> files = readAll(directory);
 
         List<Person> stored = repository.findAll();
+        Set<UUID> withHistory = history.personsWithHistory();
         Map<PersonFile, Person> matches = match(files, stored);
         Set<Person> matched = Set.copyOf(matches.values());
         List<Person> deleted = stored.stream().filter(person -> !matched.contains(person)).toList();
@@ -100,11 +103,18 @@ public class PersonImporter {
                 updated.add(existing);
             }
         }
+        List<Person> withoutHistory = stored.stream()
+                .filter(matched::contains)
+                .filter(person -> !withHistory.contains(person.getId()))
+                .toList();
         // Recorded after writing, so each revision has the time and data the database stored.
         repository.flush();
         created.forEach(person -> history.created(person, ChangeSource.IMPORT));
-        updated.forEach(person -> history.updated(person, ChangeSource.IMPORT));
-        return new Result(created.size(), updated.size(), unchanged, deleted.size());
+        updated.stream()
+                .filter(person -> withHistory.contains(person.getId()))
+                .forEach(person -> history.updated(person, ChangeSource.IMPORT));
+        withoutHistory.forEach(person -> history.created(person, ChangeSource.IMPORT));
+        return new Result(created.size(), updated.size(), unchanged, deleted.size(), withoutHistory.size());
     }
 
     /** Reads and checks every file, collecting all problems before reporting any. */
@@ -271,11 +281,12 @@ public class PersonImporter {
     /**
      * What an import changed.
      *
-     * @param created   persons that had a file but were not in the database
-     * @param updated   persons whose data differed from their file
-     * @param unchanged persons that already matched their file
-     * @param deleted   persons that had no file
+     * @param created        persons that had a file but were not in the database
+     * @param updated        persons whose data differed from their file
+     * @param unchanged      persons that already matched their file
+     * @param deleted        persons that had no file
+     * @param historyStarted persons already stored without a history, which now have their first revision
      */
-    public record Result(int created, int updated, int unchanged, int deleted) {
+    public record Result(int created, int updated, int unchanged, int deleted, int historyStarted) {
     }
 }

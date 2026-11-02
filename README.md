@@ -135,14 +135,19 @@ When running locally, every change made through the API is written to its file b
 committed to the database; if the file cannot be written, the change is rolled back. Committing
 `data/` makes the change permanent.
 
+Every change, whether made through the API or by an import, is also recorded in the database as
+a revision holding the whole person, so the application keeps the full history of the data,
+including deleted persons.
+
 The application refuses to start when the database and the files differ, and lists every
-difference by file and field. The data commands fix that, and work even when the application
-does not start:
+difference by file and field. It also refuses when a person has no history, which happens to
+persons stored before the history existed. The data commands fix both, and work even when the
+application does not start:
 
 | Command | What it does |
 |---|---|
 | `./data.sh check` | Lists the differences without changing anything |
-| `./data.sh import` | Makes the database match the files: creates, updates and deletes persons. The usual fix, for example after `git pull`. |
+| `./data.sh import` | Makes the database match the files: creates, updates and deletes persons, and records the first revision of persons without a history. The usual fix, for example after `git pull`. |
 | `./data.sh export` | Writes the database to the files, for the rare case where the database is right. Review the result with `git diff`. |
 
 On Windows, use `.\data.cmd` instead of `./data.sh`. An import checks every file first and

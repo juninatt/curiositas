@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +36,30 @@ class PersonDataCheckerTest {
         exporter.export(List.of(caesar()), directory);
 
         assertThat(PersonDataChecker.compare(List.of(caesar()), directory).isEmpty()).isTrue();
+    }
+
+    /** Names a person without a history, with its id, under the file the person belongs in. */
+    @Test
+    void reportsPersonWithoutHistory() {
+        DataDifferences differences = PersonDataChecker.withoutHistory(List.of(caesar()), Set.of(), directory);
+
+        assertThat(differences.byFile()).containsExactly(entry(
+                directory.resolve("julius-caesar-q1048.json").toString(),
+                List.of("no history in the database: Julius Caesar (" + CAESAR_ID + ")")));
+        assertThat(PersonDataChecker.withoutHistory(List.of(caesar()), Set.of(CAESAR_ID), directory).isEmpty()).isTrue();
+    }
+
+    /** Reports both kinds of problems together, both under the same file when they concern one person. */
+    @Test
+    void checksFilesAndHistoryTogether() {
+        DataDifferences differences = PersonDataChecker.check(List.of(caesar()), Set.of(), directory);
+
+        assertThat(differences.byFile()).containsExactly(entry(
+                directory.resolve("julius-caesar-q1048.json").toString(),
+                List.of("only in the database: Julius Caesar (" + CAESAR_ID + ")",
+                        "no history in the database: Julius Caesar (" + CAESAR_ID + ")")));
+        exporter.export(List.of(caesar()), directory);
+        assertThat(PersonDataChecker.check(List.of(caesar()), Set.of(CAESAR_ID), directory).isEmpty()).isTrue();
     }
 
     /** Names a person that has no file, with its id so it can be found in the database. */

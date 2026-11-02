@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 /**
  * Where the database and the data files disagree, keyed by file. Since the files are the source of
@@ -32,6 +33,19 @@ public record DataDifferences(SortedMap<String, List<String>> byFile) {
     /** Returns whether the database and the files match. */
     public boolean isEmpty() {
         return byFile.isEmpty();
+    }
+
+    /**
+     * Combines these differences with others, keeping every problem of a file that has both.
+     *
+     * @param other more differences
+     * @return all differences together
+     */
+    public DataDifferences and(DataDifferences other) {
+        Map<String, List<String>> combined = new TreeMap<>(byFile);
+        other.byFile.forEach((file, problems) -> combined.merge(file, problems,
+                (first, second) -> Stream.concat(first.stream(), second.stream()).toList()));
+        return new DataDifferences(combined);
     }
 
     /** Lists each file that differs, with what differs indented below it. */

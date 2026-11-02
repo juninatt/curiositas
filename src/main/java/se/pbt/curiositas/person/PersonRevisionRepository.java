@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -27,4 +28,12 @@ public interface PersonRevisionRepository extends JpaRepository<PersonRevision, 
      */
     @Query("select coalesce(max(r.revision), 0) from PersonRevision r where r.personId = :personId")
     int findLatestRevision(UUID personId);
+
+    /**
+     * Finds every person that has at least one revision, including deleted ones.
+     *
+     * @return the ids of those persons
+     */
+    @Query("select distinct r.personId from PersonRevision r")
+    Set<UUID> findPersonIds();
 }

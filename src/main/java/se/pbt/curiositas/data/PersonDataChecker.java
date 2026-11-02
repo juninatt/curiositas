@@ -12,17 +12,55 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
 
 /**
  * Compares the database with the data files and describes every difference precisely enough to
- * act on without searching: which file, which field, and the value on each side.
+ * act on without searching: which file, which field, and the value on each side. Also finds
+ * persons without a history, which the same import that fixes the differences fixes too.
  */
 final class PersonDataChecker {
 
     /** Not instantiable; all methods are static. */
     private PersonDataChecker() {
+    }
+
+    /**
+     * Checks everything that must hold between the database and the files: that they match, and
+     * that every person has a history.
+     *
+     * @param persons     every person in the database
+     * @param withHistory the ids of the persons that have at least one revision
+     * @param directory   the folder with one JSON file per person; a missing folder counts as empty
+     * @return every problem, keyed by file; empty when everything holds
+     * @throws UncheckedIOException if a file cannot be read
+     */
+    static DataDifferences check(List<Person> persons, Set<UUID> withHistory, Path directory) {
+        return compare(persons, directory).and(withoutHistory(persons, withHistory, directory));
+    }
+
+    /**
+     * Finds the persons without a history. They were stored before the history existed; an import
+     * records their first revision.
+     *
+     * @param persons     every person in the database
+     * @param withHistory the ids of the persons that have at least one revision
+     * @param directory   the folder the persons' files belong in, used to name them
+     * @return one problem per person without a history, keyed by the person's file
+     */
+    static DataDifferences withoutHistory(List<Person> persons, Set<UUID> withHistory, Path directory) {
+        Map<String, List<String>> problems = new TreeMap<>();
+        PersonExporter.filesFor(persons).forEach((name, file) -> {
+            Person person = file.person();
+            if (!withHistory.contains(person.getId())) {
+                problems.put(directory.resolve(name).toString(), List.of(
+                        "no history in the database: " + person.getName() + " (" + person.getId() + ")"));
+            }
+        });
+        return new DataDifferences(problems);
     }
 
     /**

@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
+import se.pbt.curiositas.person.PersonHistory;
 import se.pbt.curiositas.person.PersonService;
 
 import java.io.PrintStream;
@@ -23,6 +24,7 @@ public class DataCommandRunner implements ApplicationRunner {
 
     private final DataProperties properties;
     private final PersonService persons;
+    private final PersonHistory history;
     private final PersonExporter exporter;
     private final PersonImporter importer;
     private final ConfigurableApplicationContext context;
@@ -34,16 +36,18 @@ public class DataCommandRunner implements ApplicationRunner {
      *
      * @param properties where the data files live
      * @param persons    reads the persons to export
+     * @param history    tells which persons have a history
      * @param exporter   writes the files
      * @param importer   makes the database match the files
      * @param context    the application, stopped when the command is done
      * @param command    the command to run, from {@code curiositas.data.command}
      */
-    public DataCommandRunner(DataProperties properties, PersonService persons, PersonExporter exporter,
-                             PersonImporter importer, ConfigurableApplicationContext context,
+    public DataCommandRunner(DataProperties properties, PersonService persons, PersonHistory history,
+                             PersonExporter exporter, PersonImporter importer, ConfigurableApplicationContext context,
                              @Value("${curiositas.data.command}") String command) {
         this.properties = properties;
         this.persons = persons;
+        this.history = history;
         this.exporter = exporter;
         this.importer = importer;
         this.context = context;
@@ -91,7 +95,8 @@ public class DataCommandRunner implements ApplicationRunner {
 
     /** Reports whether the database matches the data folder, without changing either. */
     private int check() {
-        DataDifferences differences = PersonDataChecker.compare(persons.listAll(), properties.personsDirectory());
+        DataDifferences differences = PersonDataChecker.check(persons.listAll(), history.personsWithHistory(),
+                properties.personsDirectory());
         if (differences.isEmpty()) {
             out.println("The database matches the data files in " + properties.personsDirectory() + ".");
             return 0;
@@ -108,6 +113,10 @@ public class DataCommandRunner implements ApplicationRunner {
         PersonImporter.Result result = importer.importFrom(properties.personsDirectory());
         out.printf("Imported persons from %s: %d created, %d updated, %d unchanged, %d deleted.%n",
                 properties.personsDirectory(), result.created(), result.updated(), result.unchanged(), result.deleted());
+        if (result.historyStarted() > 0) {
+            out.printf("Started the history of %d persons that were stored before the history existed.%n",
+                    result.historyStarted());
+        }
         return 0;
     }
 }

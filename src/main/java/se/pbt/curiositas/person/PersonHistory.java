@@ -7,6 +7,7 @@ import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -71,6 +72,16 @@ public class PersonHistory {
      */
     public List<PersonRevision> of(UUID personId) {
         return revisions.findByPersonIdOrderByRevision(personId);
+    }
+
+    /**
+     * Returns the persons that have a history. A stored person without one was stored before the
+     * history existed, and gets its first revision from the next import.
+     *
+     * @return the ids of every person with at least one revision, including deleted persons
+     */
+    public Set<UUID> personsWithHistory() {
+        return revisions.findPersonIds();
     }
 
     /** Stores the next revision of the person. */
