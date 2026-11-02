@@ -3,6 +3,7 @@ package se.pbt.curiositas.person;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -92,8 +93,15 @@ public class PersonController implements PersonsApi {
                 .body(PersonMapper.toDto(person));
     }
 
-    /** Deletes a person and answers 204, since there is nothing left to return. */
+    /**
+     * Deletes a person and answers 204, since there is nothing left to return.
+     *
+     * <p>Mapped here instead of in the generated interface, which only lets clients accepting
+     * {@code application/problem+json} call it, since that is the only media type among the
+     * responses. A response without a body must not depend on what the client accepts.
+     */
     @Override
+    @DeleteMapping(PersonsApi.PATH_DELETE_PERSON)
     public ResponseEntity<Void> deletePerson(UUID id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
