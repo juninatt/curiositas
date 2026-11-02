@@ -99,6 +99,7 @@ public class PersonService {
      */
     @Transactional
     public Person create(Person person) {
+        history.takeTurnToWrite();
         rejectDuplicate(person);
         Person created = repository.saveAndFlush(person);
         history.created(created, ChangeSource.API);
@@ -123,6 +124,7 @@ public class PersonService {
      */
     @Transactional
     public Person replace(UUID id, long expectedVersion, Consumer<Person> changes) {
+        history.takeTurnToWrite();
         Person person = get(id);
         if (person.getVersion() != expectedVersion) {
             throw new PersonChangedException(expectedVersion, person.getVersion());
@@ -146,6 +148,7 @@ public class PersonService {
      */
     @Transactional
     public void delete(UUID id) {
+        history.takeTurnToWrite();
         Person person = get(id);
         history.deleted(person, ChangeSource.API);
         repository.delete(person);

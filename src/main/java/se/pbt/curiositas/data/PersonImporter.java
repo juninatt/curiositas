@@ -79,6 +79,8 @@ public class PersonImporter {
     public Result importFrom(Path directory) {
         List<PersonFile> files = readAll(directory);
 
+        // The files are read before waiting, so other writes wait only for the database work.
+        history.takeTurnToWrite();
         List<Person> stored = repository.findAll();
         Set<UUID> withHistory = history.personsWithHistory();
         Map<PersonFile, Person> matches = match(files, stored);

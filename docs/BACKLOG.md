@@ -39,7 +39,7 @@ steps. Tests are written alongside every step, never afterwards.
 - [ ] ETag and 304 Not Modified, so unchanged data is never sent again
 - [ ] Change feed by sequence number (`/changes?after=…`), including deletions, so clients can keep
   in sync even after missing several syncs
-- [ ] Hand out sequence numbers in the order changes are committed, for example by letting writes
+- [x] Hand out sequence numbers in the order changes are committed, for example by letting writes
   take turns, so a client reading the feed between two concurrent changes cannot miss one
 - [ ] The highest sequence number as the dataset version
 - [ ] Prove that replaying the change feed from the start gives exactly the current data, and that

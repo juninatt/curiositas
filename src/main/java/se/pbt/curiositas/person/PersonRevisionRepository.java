@@ -39,6 +39,17 @@ public interface PersonRevisionRepository extends JpaRepository<PersonRevision, 
     int findLatestRevision(UUID personId);
 
     /**
+     * Waits until no other transaction holds the lock with the given key, then holds it until this
+     * transaction commits or rolls back. Only transactions that ask for the same key wait for each
+     * other; the lock blocks no rows or tables.
+     *
+     * @param key identifies the lock
+     * @return always 1, since a native query must return something
+     */
+    @Query(value = "select 1 from pg_advisory_xact_lock(:key)", nativeQuery = true)
+    int lockUntilCommit(long key);
+
+    /**
      * Finds every person that has at least one revision, including deleted ones.
      *
      * @return the ids of those persons
