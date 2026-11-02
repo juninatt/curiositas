@@ -1,0 +1,14 @@
+<!-- Writes the database to the files in data/; review the result with git diff. Same as data.cmd export; Docker must be running. -->
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Data: export" type="Application" factoryName="Application" folderName="Data">
+    <option name="MAIN_CLASS_NAME" value="se.pbt.curiositas.CuriositasApplication" />
+    <module name="curiositas" />
+    <!-- Keeps IntelliJ from attaching to a process that ends within a second, which only logs an error -->
+    <option name="VM_PARAMETERS" value="-XX:+DisableAttachMechanism" />
+    <option name="PROGRAM_PARAMETERS" value="--spring.profiles.active=data-command --curiositas.data.command=export" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

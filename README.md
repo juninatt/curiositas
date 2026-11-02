@@ -152,12 +152,12 @@ application does not start:
 | `./data.sh import` | Makes the database match the files: creates, updates and deletes persons, and records the first revision of persons without a history. The usual fix, for example after `git pull`. |
 | `./data.sh export` | Writes the database to the files, for the rare case where the database is right. Review the result with `git diff`. |
 
-On Windows, use `.\data.cmd` instead of `./data.sh`. An import checks every file first and
-changes nothing if any file is invalid, listing each problem with its file and field, or with
-line and column for broken JSON. A file with an unknown field or broken JSON is reported with
-that problem first; its other problems show once it is fixed. Persons keep their ids across
-imports as long as they are recognisably the same person, by Wikidata id or else by name and life
-dates.
+On Windows, use `.\data.cmd` instead of `./data.sh`. In IntelliJ IDEA, the same commands are shared
+run configurations under **Data** (from the [`.run`](.run) folder). An import checks every file
+first and changes nothing if any file is invalid, listing each problem with its file and field, or
+with line and column for broken JSON. A file with an unknown field or broken JSON is reported with
+that problem first; its other problems show once it is fixed. Persons keep their ids across imports
+as long as they are recognisably the same person, by Wikidata id or else by name and life dates.
 
 ## Design principles
 
