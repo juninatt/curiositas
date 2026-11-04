@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.RequestMatcher;
@@ -16,8 +15,6 @@ import se.pbt.curiositas.wikidata.WikidataValue.Item;
 import se.pbt.curiositas.wikidata.WikidataValue.Text;
 import se.pbt.curiositas.wikidata.WikidataValue.Time;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -36,7 +33,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 /**
  * Verifies reading items from Wikidata against saved answers from the real API (see
- * {@code src/test/resources/wikidata/README.md}), so the tests never depend on Wikidata being
+ * {@link WikidataFixtures}), so the tests never depend on Wikidata being
  * reachable or unchanged.
  */
 class WikidataClientTest {
@@ -57,7 +54,7 @@ class WikidataClientTest {
     /** Reads the label and every statement, with rank, precision, calendar and qualifiers. */
     @Test
     void readsLabelAndStatements() {
-        wikidata.expect(asksFor("Q1048")).andRespond(answer("Q1048"));
+        wikidata.expect(asksFor("Q1048")).andRespond(WikidataFixtures.answer("Q1048"));
 
         WikidataEntity caesar = client.fetch(List.of("Q1048")).getFirst();
 
@@ -80,7 +77,7 @@ class WikidataClientTest {
     /** Reads an unknown value as null and keeps deprecated statements with their rank. */
     @Test
     void readsUnknownValuesAndDeprecatedStatements() {
-        wikidata.expect(asksFor("Q231549")).andRespond(answer("Q231549"));
+        wikidata.expect(asksFor("Q231549")).andRespond(WikidataFixtures.answer("Q231549"));
 
         WikidataEntity bonny = client.fetch(List.of("Q231549")).getFirst();
 
@@ -98,7 +95,7 @@ class WikidataClientTest {
                 .andExpect(query("action", "wbgetentities"))
                 .andExpect(query("props", "labels|claims"))
                 .andExpect(query("languages", "en"))
-                .andRespond(answer("Q1048", "Q231549"));
+                .andRespond(WikidataFixtures.answer("Q1048", "Q231549"));
 
         assertThat(client.fetch(List.of("Q231549", "Q1048"))).extracting(WikidataEntity::label)
                 .containsExactly("Anne Bonny", "Julius Caesar");
@@ -107,7 +104,7 @@ class WikidataClientTest {
     /** Names Curiositas in every request, as Wikidata's rules require. */
     @Test
     void sendsUserAgent() {
-        wikidata.expect(header("User-Agent", USER_AGENT)).andRespond(answer("Q1048"));
+        wikidata.expect(header("User-Agent", USER_AGENT)).andRespond(WikidataFixtures.answer("Q1048"));
 
         client.fetch(List.of("Q1048"));
 
@@ -129,7 +126,7 @@ class WikidataClientTest {
     @Test
     void reportsUnknownIds() {
         wikidata.expect(asksFor("Q1048", "Q999999999"))
-                .andRespond(withSuccess(entities(Map.of("Q1048", fixture("Q1048"),
+                .andRespond(withSuccess(WikidataFixtures.entities(Map.of("Q1048", WikidataFixtures.item("Q1048"),
                         "Q999999999", "{ \"id\": \"Q999999999\", \"missing\": \"\" }")), MediaType.APPLICATION_JSON));
 
         assertThatThrownBy(() -> client.fetch(List.of("Q1048", "Q999999999")))
@@ -174,7 +171,7 @@ class WikidataClientTest {
     /** Keeps values of kinds it does not read, and leaves unknown qualifier values out. */
     @Test
     void keepsUnsupportedValuesAndSkipsUnknownQualifiers() {
-        wikidata.expect(asksFor("Q1")).andRespond(withSuccess(entities(Map.of("Q1", """
+        wikidata.expect(asksFor("Q1")).andRespond(withSuccess(WikidataFixtures.entities(Map.of("Q1", """
                 { "id": "Q1", "labels": {}, "claims": { "P2067": [ {
                     "rank": "normal",
                     "mainsnak": { "snaktype": "value", "property": "P2067",
@@ -217,41 +214,12 @@ class WikidataClientTest {
                 .getQueryParams().getFirst(name), StandardCharsets.UTF_8)).as(name).isEqualTo(value);
     }
 
-    /** Answers with the saved items. */
-    private static ResponseCreator answer(String... ids) {
-        Map<String, String> items = new LinkedHashMap<>();
-        for (String id : ids) {
-            items.put(id, fixture(id));
-        }
-        return withSuccess(entities(items), MediaType.APPLICATION_JSON);
-    }
-
     /** Answers with items that have neither label nor statements. */
     private static ResponseCreator emptyItems(List<String> ids) {
         Map<String, String> items = new LinkedHashMap<>();
         for (String id : ids) {
             items.put(id, "{ \"id\": \"" + id + "\", \"labels\": {}, \"claims\": {} }");
         }
-        return withSuccess(entities(items), MediaType.APPLICATION_JSON);
-    }
-
-    /** Wraps items in an answer as Wikidata's API gives it. */
-    private static String entities(Map<String, String> items) {
-        StringBuilder json = new StringBuilder("{ \"entities\": {");
-        String separator = "";
-        for (Map.Entry<String, String> item : items.entrySet()) {
-            json.append(separator).append('"').append(item.getKey()).append("\": ").append(item.getValue());
-            separator = ",";
-        }
-        return json.append("}, \"success\": 1 }").toString();
-    }
-
-    /** Reads a saved item. */
-    private static String fixture(String id) {
-        try {
-            return new ClassPathResource("wikidata/" + id + ".json").getContentAsString(StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        return withSuccess(WikidataFixtures.entities(items), MediaType.APPLICATION_JSON);
     }
 }
