@@ -1,0 +1,50 @@
+{
+  "type": "item",
+  "id": "Q27",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Ireland"
+    }
+  },
+  "claims": {
+    "P297": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P297",
+          "hash": "47588361f66897565cfdb67f725ab6ffc1b0d627",
+          "datavalue": {
+            "value": "IE",
+            "type": "string"
+          },
+          "datatype": "external-id"
+        },
+        "type": "statement",
+        "id": "q27$DF80CD4A-16AC-45DB-BB64-BCE65645CB32",
+        "rank": "normal"
+      }
+    ],
+    "P17": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "f4ccb05f7faebc2073ed81093902b84d250e6695",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 27,
+              "id": "Q27"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "id": "Q27$a90dc7c7-403c-a3bc-34b9-e85f4e76de87",
+        "rank": "normal"
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "type": "item",
+  "id": "Q38",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Italy"
+    }
+  },
+  "claims": {
+    "P297": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P297",
+          "hash": "678b323f6f495dfd2802a33415aad1070b20e94d",
+          "datavalue": {
+            "value": "IT",
+            "type": "string"
+          },
+          "datatype": "external-id"
+        },
+        "type": "statement",
+        "id": "q38$B0202A62-4B99-4CAE-B3E7-637DB7DDE0C4",
+        "rank": "normal"
+      }
+    ],
+    "P17": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "b48529e9f7e0898ab1ddaefe8547cdb863e0167c",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 38,
+              "id": "Q38"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "id": "Q38$da8000c1-4287-bd54-7514-f66c6a3929f1",
+        "rank": "normal"
+      }
+    ]
+  }
+}

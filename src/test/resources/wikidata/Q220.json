@@ -1,0 +1,1050 @@
+{
+  "type": "item",
+  "id": "Q220",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Rome"
+    }
+  },
+  "claims": {
+    "P17": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "b48529e9f7e0898ab1ddaefe8547cdb863e0167c",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 38,
+              "id": "Q38"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "30c181dbab41d99695ff26f79055a1d9cd96f04f",
+              "datavalue": {
+                "value": {
+                  "time": "+1948-06-13T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580"
+        ],
+        "id": "q220$0007769B-B60F-400C-8841-D5ACBD17E8F9",
+        "rank": "preferred"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "7be7b205d8051c1881449da32a5ee02799830e02",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 170174,
+              "id": "Q170174"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "f6b7ca75b780d16f16b59afa7dd0362831b63d3c",
+              "datavalue": {
+                "value": {
+                  "time": "+0752-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "9fabe8174b3592c287093611200e98b2de4fd280",
+              "datavalue": {
+                "value": {
+                  "time": "+1870-09-20T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$1f0623a7-4791-fcae-2816-85585e09a28d",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "aaa93056a54da428e0c6056d6f0a344bb02f630c",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 3755547,
+              "id": "Q3755547"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "4ea887b6bb0b8c436d52fd3c8969c8facfe7e0c0",
+              "datavalue": {
+                "value": {
+                  "time": "+0493-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "398e99e2e7a74403910f4af925499b960cd94fb7",
+              "datavalue": {
+                "value": {
+                  "time": "+0476-09-04T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P582",
+          "P580"
+        ],
+        "id": "Q220$f474d5d5-4e85-37fc-7bcc-e90f06171f32",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "42606860d98cfaadaeb21aed26705705e446637f",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 583038,
+              "id": "Q583038"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "26eb5107b064a79439233307a2f27b772179cd5c",
+              "datavalue": {
+                "value": {
+                  "time": "+0493-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "8c5d61bd6e523a651cd0ad9b35e92360ac5b0bbc",
+              "datavalue": {
+                "value": {
+                  "time": "+0553-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$79689616-4d47-3d95-b410-389f33d77728",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "4e7e5ae19bafc069c8f235793766fce4aacb0669",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 12544,
+              "id": "Q12544"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "56ed1c645782c2812b242c8207e4b56d24c856f0",
+              "datavalue": {
+                "value": {
+                  "time": "+0553-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "bbbd9e35de7b59c6061738d62fad20f3fed21515",
+              "datavalue": {
+                "value": {
+                  "time": "+0752-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$dba556d5-446b-7f14-3212-044d20e10246",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "8bfdfe092a8950e9fbcbf0cadd9d71173ab5643a",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 172579,
+              "id": "Q172579"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "b666dbd94499cf54d10b14951e833cdf4a6f5ec9",
+              "datavalue": {
+                "value": {
+                  "time": "+1870-09-20T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "65252cb8e1dca491052372f949f3a519e1ee7916",
+              "datavalue": {
+                "value": {
+                  "time": "+1948-06-13T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$B7BCD76E-2F80-4F15-9F10-795F1AF18055",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "c30bf3a23ac07e10009561f72b3b080768740265",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 201038,
+              "id": "Q201038"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "1e063cd9ae40edb3d6e5d7cad0a3d38066a50643",
+              "datavalue": {
+                "value": {
+                  "time": "-0753-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "e8973f1686ce3888d42c6f04a17f32fd8f9d7a41",
+              "datavalue": {
+                "value": {
+                  "time": "-0509-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$2baec874-4afa-383a-ceec-4c239c14614b",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "ae7536df6b856fc2b861b4cf33fb8fc6bd3e2d01",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 17167,
+              "id": "Q17167"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "cb0d7201c32f05a46132b28b39d0a6391b5c5271",
+              "datavalue": {
+                "value": {
+                  "time": "-0509-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "4fadc7ae8c8996e3892f8fe23cabfe7f221ba731",
+              "datavalue": {
+                "value": {
+                  "time": "-0027-01-16T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$eb78afcf-473f-65a5-44dc-4fa658967dc8",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "7bb9bb285193e8899cda557f57ba865835912189",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 2277,
+              "id": "Q2277"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "c8f60a3ae7d54497e43cac56d0b6f4a0a376f110",
+              "datavalue": {
+                "value": {
+                  "time": "-0027-01-16T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "50ada74e663446459b35db74ae491904748dc6da",
+              "datavalue": {
+                "value": {
+                  "time": "+0395-01-17T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$b4355fce-4d92-dd09-30ed-ee730c12d444",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "c696cf65a8e343107d5999b5fc4ff751a4048fd4",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 42834,
+              "id": "Q42834"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "76ea832857a6564e044b2dc839c10c7384f04640",
+              "datavalue": {
+                "value": {
+                  "time": "+0395-01-17T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ],
+          "P582": [
+            {
+              "snaktype": "value",
+              "property": "P582",
+              "hash": "4ea887b6bb0b8c436d52fd3c8969c8facfe7e0c0",
+              "datavalue": {
+                "value": {
+                  "time": "+0493-00-00T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 9,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985786"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580",
+          "P582"
+        ],
+        "id": "Q220$e09f5a72-4ba5-3e8d-42b9-c061034edf3a",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "d79294f8761b15d50810c238184b5c36b47a45be",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 237,
+              "id": "Q237"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P580": [
+            {
+              "snaktype": "value",
+              "property": "P580",
+              "hash": "2c3d82f41214c3d3acd968d40b8c0ed0bc93f039",
+              "datavalue": {
+                "value": {
+                  "time": "+1929-02-11T00:00:00Z",
+                  "timezone": 0,
+                  "before": 0,
+                  "after": 0,
+                  "precision": 11,
+                  "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                },
+                "type": "time"
+              },
+              "datatype": "time"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P580"
+        ],
+        "id": "Q220$98f6b31c-4b42-7a73-43e8-80a89f9664f8",
+        "rank": "normal"
+      }
+    ],
+    "P1449": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "5bdae229becf4b668930545b95ebbc7eb74b2bb5",
+          "datavalue": {
+            "value": {
+              "text": "Urbs Aeterna",
+              "language": "la"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P805": [
+            {
+              "snaktype": "value",
+              "property": "P805",
+              "hash": "30257003ca48a975c2739cb179f045c4c7095927",
+              "datavalue": {
+                "value": {
+                  "entity-type": "item",
+                  "numeric-id": 65202721,
+                  "id": "Q65202721"
+                },
+                "type": "wikibase-entityid"
+              },
+              "datatype": "wikibase-item"
+            }
+          ],
+          "P2441": [
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "3a36ac5a63d47505b7e529722a40d886f09f24ca",
+              "datavalue": {
+                "value": {
+                  "text": "Eternal City",
+                  "language": "en"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "ddb400b32b1de9b2271c05b07e34bbb3b7c01529",
+              "datavalue": {
+                "value": {
+                  "text": "Città Eterna",
+                  "language": "it"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "6ff904a9354bb39fe62216fd8d4b87ce63fae7ec",
+              "datavalue": {
+                "value": {
+                  "text": "Ciudad Eterna",
+                  "language": "es"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "7be2eeaa6aae7adfd5483643c57644e7c649771e",
+              "datavalue": {
+                "value": {
+                  "text": "Wieczne Miasto",
+                  "language": "pl"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "1076670d4a6c02c9f6e53ed1ce9e51d6aee9499d",
+              "datavalue": {
+                "value": {
+                  "text": "Věčné Město",
+                  "language": "cs"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "7ce3516ae6774ef03776ea5ad7a7fde00d347f04",
+              "datavalue": {
+                "value": {
+                  "text": "Вечный Город",
+                  "language": "ru"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "29f82d9e147ac6449f2f6e8479a707398afacb23",
+              "datavalue": {
+                "value": {
+                  "text": "Večno Mesto",
+                  "language": "la"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            },
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "051fca4d51d83cfa6fc6fe368673f95882d2f95c",
+              "datavalue": {
+                "value": {
+                  "text": "Eviga Staden",
+                  "language": "sv"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P805",
+          "P2441"
+        ],
+        "id": "Q220$bb18cdf3-4d87-6305-e0a0-17e13551921b",
+        "rank": "preferred"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "6e6b3e1b02ba76415b88a06abea8ad00b671a26c",
+          "datavalue": {
+            "value": {
+              "text": "Caput Mundi",
+              "language": "la"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "qualifiers": {
+          "P805": [
+            {
+              "snaktype": "value",
+              "property": "P805",
+              "hash": "1f68f64e5d07f5f238889b284685df34cb76fa21",
+              "datavalue": {
+                "value": {
+                  "entity-type": "item",
+                  "numeric-id": 777102,
+                  "id": "Q777102"
+                },
+                "type": "wikibase-entityid"
+              },
+              "datatype": "wikibase-item"
+            }
+          ],
+          "P2441": [
+            {
+              "snaktype": "value",
+              "property": "P2441",
+              "hash": "452ade68954a2897b247893f97bf3792680cc782",
+              "datavalue": {
+                "value": {
+                  "text": "Capital of the World",
+                  "language": "en"
+                },
+                "type": "monolingualtext"
+              },
+              "datatype": "monolingualtext"
+            }
+          ]
+        },
+        "qualifiers-order": [
+          "P805",
+          "P2441"
+        ],
+        "id": "Q220$57ff85d1-480a-3ae9-2801-cb2d476528a3",
+        "rank": "preferred"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "6ec02e44caf2004fed2606f5657458706532891c",
+          "datavalue": {
+            "value": {
+              "text": "la città eterna",
+              "language": "it"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$a961fd52-4157-d753-2d93-1404a43b7461",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "761167644dd7df7b8af90a408b420517f6d2f974",
+          "datavalue": {
+            "value": {
+              "text": "Вечный город",
+              "language": "ru"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$9cdaab47-4661-af4c-8e34-9cdb4736bc74",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "de9a6391480d0586bb8720da28a759a80c54f07d",
+          "datavalue": {
+            "value": {
+              "text": "Wieczne Miasto",
+              "language": "pl"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$8ed8ae80-4022-5136-75f0-80def820cb86",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "3a01a84876c1465b95ad8705a0e16a297c9b1723",
+          "datavalue": {
+            "value": {
+              "text": "Věčné město",
+              "language": "cs"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$d6d3675e-4998-e06c-ff72-694bca2dffc7",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "e8dc3eb42957445ad55c0cb7f4ff980014f825ab",
+          "datavalue": {
+            "value": {
+              "text": "Ciudad Eterna",
+              "language": "es"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$92c97526-444d-249e-189e-57a064055817",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "51f6e102533ef5874c1a89200711d149dd21fade",
+          "datavalue": {
+            "value": {
+              "text": "večno mesto",
+              "language": "sl"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$a322533e-47f3-0972-7713-f12e5061554f",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "10e2fb25cb0b85f17a331953d07ac61de301a52f",
+          "datavalue": {
+            "value": {
+              "text": "The Eternal City",
+              "language": "en"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$71a5fc3b-438f-ede1-3f9c-070368064e02",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "fa92d6ec34dfdb59e344d36b502c85eef83d44e1",
+          "datavalue": {
+            "value": {
+              "text": "The City of Seven Hills",
+              "language": "en"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$d8f85922-420e-9e63-d409-b6a8aaba9709",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "262691b9e00d490937deca0ec22688fc9725001c",
+          "datavalue": {
+            "value": {
+              "text": "The City of Marble",
+              "language": "en"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$5810f1da-41d9-1440-e8ec-8cad040b0c07",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P1449",
+          "hash": "e37297d1573136fd5a30a6376d75fac7ea16cf13",
+          "datavalue": {
+            "value": {
+              "text": "The Capital of the World",
+              "language": "en"
+            },
+            "type": "monolingualtext"
+          },
+          "datatype": "monolingualtext"
+        },
+        "type": "statement",
+        "id": "Q220$18077508-42a0-1d08-6aae-014b6b2d3114",
+        "rank": "normal"
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "type": "item",
+  "id": "Q237",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Vatican City"
+    }
+  },
+  "claims": {
+    "P297": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P297",
+          "hash": "080ca22cad6d94a80ddbd57c0d04e065bb6686a1",
+          "datavalue": {
+            "value": "VA",
+            "type": "string"
+          },
+          "datatype": "external-id"
+        },
+        "type": "statement",
+        "id": "q237$7A2E465D-15E5-4BAF-9C68-BD35FAD2675D",
+        "rank": "normal"
+      }
+    ],
+    "P17": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "d79294f8761b15d50810c238184b5c36b47a45be",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 237,
+              "id": "Q237"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "id": "Q237$BEE94116-3551-4882-AB37-59F883960C91",
+        "rank": "normal"
+      }
+    ]
+  }
+}

@@ -122,8 +122,14 @@ public final class PersonMapper {
                 .birthCountry(person.getBirthCountry());
     }
 
-    /** Converts a date to the request format, or returns {@code null} if the date is unknown. */
-    private static HistoricalDateInputDto toInput(HistoricalDate date) {
+    /**
+     * Converts a date to the request format, which is also the format of the data files, leaving
+     * out an uncertainty of 0.
+     *
+     * @param date the date, or {@code null} if it is unknown
+     * @return the date as a client would send it, or {@code null} if it is unknown
+     */
+    public static HistoricalDateInputDto toInput(HistoricalDate date) {
         if (date == null) {
             return null;
         }

@@ -1,0 +1,33 @@
+{
+  "type": "item",
+  "id": "Q944814",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Theatre of Pompey"
+    }
+  },
+  "claims": {
+    "P17": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "b48529e9f7e0898ab1ddaefe8547cdb863e0167c",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 38,
+              "id": "Q38"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "id": "Q944814$5502F55F-736C-45BD-B721-B3D10D68B2C9",
+        "rank": "normal"
+      }
+    ]
+  }
+}

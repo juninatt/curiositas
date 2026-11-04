@@ -1,0 +1,33 @@
+{
+  "type": "item",
+  "id": "Q840681",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Kinsale"
+    }
+  },
+  "claims": {
+    "P17": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P17",
+          "hash": "f4ccb05f7faebc2073ed81093902b84d250e6695",
+          "datavalue": {
+            "value": {
+              "entity-type": "item",
+              "numeric-id": 27,
+              "id": "Q27"
+            },
+            "type": "wikibase-entityid"
+          },
+          "datatype": "wikibase-item"
+        },
+        "type": "statement",
+        "id": "q840681$9D442CBE-05BD-41FC-9BBD-1EEDD75F53BC",
+        "rank": "normal"
+      }
+    ]
+  }
+}
