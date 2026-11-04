@@ -10,7 +10,7 @@ adds value in three steps:
 
 | Step | What it means |
 |---|---|
-| **Curate** | Choose which people to include and settle conflicting sources. Facts are to be fetched from Wikidata rather than typed in by hand, and every change is reviewed before it is stored. |
+| **Curate** | Choose which people to include and settle conflicting sources. Facts are fetched from Wikidata rather than typed in by hand, and every change is reviewed before it is stored. |
 | **Model** | Store only what the sources support: a date can be known to the year or month only, with an uncertainty in years, and derived values such as age are calculated as ranges. |
 | **Publish** | Serve the data through a contract-first REST API, designed for clients that load everything once or keep in sync with every change, including deletions. |
 
@@ -23,8 +23,8 @@ User interfaces are separate projects that only use the API, such as
 [Conspectus](https://github.com/juninatt/Conspectus). The project also serves as a showcase of
 API design and API testing.
 
-**Status:** curating by hand, modelling, the read and write API, the revision history and
-synchronisation are in place. Fetching from Wikidata is next; see the
+**Status:** modelling, the read and write API, the revision history, synchronisation and fetching
+persons from Wikidata are in place. The first theme, the Roman Empire, is next; see the
 [backlog](docs/BACKLOG.md).
 
 ## Tech stack
@@ -158,6 +158,7 @@ application does not start:
 | `./data.sh check` | Lists the differences without changing anything |
 | `./data.sh import` | Makes the database match the files: creates, updates and deletes persons, and records the first revision of persons without a history. The usual fix, for example after `git pull`. |
 | `./data.sh export` | Writes the database to the files, for the rare case where the database is right. Review the result with `git diff`. |
+| `./data.sh fetch` | Writes the persons of every theme from Wikidata to the files, without touching the database (see [Themes](#themes)). |
 
 On Windows, use `.\data.cmd` instead of `./data.sh`. In IntelliJ IDEA, the same commands are shared
 run configurations under **Data** (from the [`.run`](.run) folder). An import checks every file
@@ -165,6 +166,43 @@ first and changes nothing if any file is invalid, listing each problem with its 
 with line and column for broken JSON. A file with an unknown field or broken JSON is reported with
 that problem first; its other problems show once it is fixed. Persons keep their ids across imports
 as long as they are recognisably the same person, by Wikidata id or else by name and life dates.
+
+### Themes
+
+Persons are curated by theme: a time and a place, such as the Roman Empire. Each theme is a file
+in [`data/themes/`](data/themes) that lists the persons chosen for it by their Wikidata ids; the
+names are there only to make the list readable.
+
+```json
+{
+  "name": "The Roman Empire",
+  "persons": [
+    { "wikidataId": "Q1048", "name": "Julius Caesar" }
+  ]
+}
+```
+
+`./data.sh fetch` reads every person in the themes from Wikidata and writes their files, so the
+choice of persons is made by hand and the facts come from Wikidata. Nothing reaches the database
+until the result has been reviewed with `git diff` and imported:
+
+```
+choose persons ──▶ data/themes ──fetch──▶ data/persons ──review──▶ git commit ──import──▶ database
+```
+
+What a fetch takes from Wikidata, and how:
+
+| Fact | Rule |
+|---|---|
+| Dates | Never more precise than Wikidata: a date known to the month gets no day, and a century becomes a year with an uncertainty of 50. "Circa" gives an uncertainty of 5 years. |
+| Disagreeing sources | Wikidata's preferred statement is used; without one, the statements are combined into what they share, so 12 or 13 July becomes July. The fetch lists every person whose sources disagree. |
+| Places | The English name, after how sure the source is, such as "possibly Kinsale". |
+| Birth country | The modern country of the place of birth: a country without an end date that has an ISO code, so Rome gives Italy, not the Roman Republic. |
+| Other names | Only names Wikidata gives a type: birth name, nickname and pseudonym. |
+
+A fetch replaces the files of the persons in the themes, so corrections belong in Wikidata, where
+they help everyone. Files of other persons are left alone. If any person breaks the rules of the
+API, for example with a death before the birth, nothing is written.
 
 ## Design principles
 

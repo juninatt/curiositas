@@ -21,7 +21,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  * Gives tests the items saved from Wikidata in {@code src/test/resources/wikidata}, either as the
  * API's answer or already read, so every test works on real data without calling Wikidata.
  */
-final class WikidataFixtures {
+public final class WikidataFixtures {
 
     /** Not instantiable; all methods are static. */
     private WikidataFixtures() {
@@ -33,7 +33,7 @@ final class WikidataFixtures {
      * @param id the item's id, for example {@code Q1048}
      * @return the item
      */
-    static WikidataEntity entity(String id) {
+    public static WikidataEntity entity(String id) {
         RestClient.Builder builder = RestClient.builder();
         MockRestServiceServer wikidata = MockRestServiceServer.bindTo(builder).build();
         wikidata.expect(anything()).andRespond(answer(id));
@@ -47,7 +47,7 @@ final class WikidataFixtures {
      * @param ids the items' ids
      * @return the answer
      */
-    static ResponseCreator answer(String... ids) {
+    public static ResponseCreator answer(String... ids) {
         Map<String, String> items = new LinkedHashMap<>();
         for (String id : ids) {
             items.put(id, item(id));
@@ -61,7 +61,7 @@ final class WikidataFixtures {
      * @param items the JSON of each item, by id
      * @return the answer's JSON
      */
-    static String entities(Map<String, String> items) {
+    public static String entities(Map<String, String> items) {
         StringBuilder json = new StringBuilder("{ \"entities\": {");
         String separator = "";
         for (Map.Entry<String, String> item : items.entrySet()) {
@@ -77,7 +77,7 @@ final class WikidataFixtures {
      * @param id the item's id
      * @return the JSON, as it appears under {@code entities} in the API's answer
      */
-    static String item(String id) {
+    public static String item(String id) {
         try {
             return new ClassPathResource("wikidata/" + id + ".json").getContentAsString(StandardCharsets.UTF_8);
         } catch (IOException e) {

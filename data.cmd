@@ -3,7 +3,7 @@ rem Runs a data command against the local database, for example: data.cmd export
 rem Docker must be running. The command runs without a web server and needs no admin password.
 if "%~1"=="" (
     echo Usage: data.cmd ^<command^>
-    echo Commands: export, import, check
+    echo Commands: export, import, check, fetch
     exit /b 1
 )
 pushd "%~dp0"

@@ -13,7 +13,7 @@ import se.pbt.curiositas.person.PersonService;
 import java.io.PrintStream;
 
 /**
- * Runs one data command, such as {@code export}, {@code import} or {@code check}, and then
+ * Runs one data command, such as {@code export}, {@code import}, {@code check} or {@code fetch}, and then
  * stops the application. Started through {@code data.cmd} or {@code data.sh}, which set
  * {@code curiositas.data.command}; the application then runs without a web server, so commands
  * work even when the server could not start.
@@ -27,6 +27,7 @@ public class DataCommandRunner implements ApplicationRunner {
     private final PersonHistory history;
     private final PersonExporter exporter;
     private final PersonImporter importer;
+    private final PersonFetcher fetcher;
     private final ConfigurableApplicationContext context;
     private final String command;
     private final PrintStream out;
@@ -39,17 +40,20 @@ public class DataCommandRunner implements ApplicationRunner {
      * @param history    tells which persons have a history
      * @param exporter   writes the files
      * @param importer   makes the database match the files
+     * @param fetcher    writes the persons of every theme from Wikidata to the files
      * @param context    the application, stopped when the command is done
      * @param command    the command to run, from {@code curiositas.data.command}
      */
     public DataCommandRunner(DataProperties properties, PersonService persons, PersonHistory history,
-                             PersonExporter exporter, PersonImporter importer, ConfigurableApplicationContext context,
+                             PersonExporter exporter, PersonImporter importer, PersonFetcher fetcher,
+                             ConfigurableApplicationContext context,
                              @Value("${curiositas.data.command}") String command) {
         this.properties = properties;
         this.persons = persons;
         this.history = history;
         this.exporter = exporter;
         this.importer = importer;
+        this.fetcher = fetcher;
         this.context = context;
         this.command = command.strip();
         this.out = System.out;
@@ -67,8 +71,9 @@ public class DataCommandRunner implements ApplicationRunner {
                 case "export" -> export();
                 case "import" -> importFiles();
                 case "check" -> check();
+                case "fetch" -> fetch();
                 default -> {
-                    out.println("Unknown data command '" + command + "'. Available commands: export, import, check");
+                    out.println("Unknown data command '" + command + "'. Available commands: export, import, check, fetch");
                     yield 1;
                 }
             };
@@ -117,6 +122,36 @@ public class DataCommandRunner implements ApplicationRunner {
             out.printf("Started the history of %d persons that were stored before the history existed.%n",
                     result.historyStarted());
         }
+        return 0;
+    }
+
+    /**
+     * Writes the persons of every theme from Wikidata to the data folder, and lists what the review
+     * should look at. The database is not changed; the import does that after the review.
+     */
+    private int fetch() {
+        PersonFetcher.Result result;
+        try {
+            result = fetcher.fetch(properties.themesDirectory(), properties.personsDirectory());
+        } catch (InvalidDataFilesException invalid) {
+            out.println("Nothing was written, since these themes or persons have problems:");
+            out.println(invalid.getMessage());
+            out.println("Fix the themes, or the data on Wikidata, and fetch again.");
+            return 1;
+        }
+        if (result.themes().isEmpty()) {
+            out.println("There are no themes in " + properties.themesDirectory() + ", so nothing was fetched.");
+            return 0;
+        }
+        out.printf("Fetched the persons of %s from Wikidata to %s: %d written, %d unchanged.%n",
+                String.join(", ", result.themes()), properties.personsDirectory(), result.written(), result.unchanged());
+        if (!result.notes().isEmpty()) {
+            out.println();
+            out.println("Look closer at these persons:");
+            out.println(FileReport.describe(result.notes()));
+        }
+        out.println();
+        out.println("Review the changes with git diff, then run the import to store them in the database.");
         return 0;
     }
 }

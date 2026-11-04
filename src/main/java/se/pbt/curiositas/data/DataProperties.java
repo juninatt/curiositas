@@ -17,4 +17,9 @@ public record DataProperties(@DefaultValue("data") Path directory) {
     public Path personsDirectory() {
         return directory.resolve("persons");
     }
+
+    /** Returns the folder holding one JSON file per theme, listing the persons to fetch from Wikidata. */
+    public Path themesDirectory() {
+        return directory.resolve("themes");
+    }
 }
