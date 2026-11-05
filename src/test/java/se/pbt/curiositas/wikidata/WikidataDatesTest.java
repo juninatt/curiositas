@@ -164,11 +164,35 @@ class WikidataDatesTest {
         assertThat(WikidataDates.toDate(statement).displayText()).isEqualTo("1690 ± 5");
     }
 
-    /** Makes an approximate date a year with an uncertainty, but never narrows a wider one. */
+    /**
+     * Makes an approximate date give up its finest known part, so "circa" on an exact day keeps the
+     * month instead of turning into years, and never narrows a date that is already wider.
+     */
+    @ParameterizedTest(name = "circa {0} at precision {1} is {2}")
+    @CsvSource(delimiter = '|', textBlock = """
+            +1718-11-22T00:00:00Z | 11 | Nov 1718
+            +1718-11-00T00:00:00Z | 10 | 1718
+            +1718-00-00T00:00:00Z |  9 | 1718 ± 5
+            +1690-00-00T00:00:00Z |  8 | 1695 ± 5
+            +1750-00-00T00:00:00Z |  7 | 1751 ± 50
+            """)
+    void readsCircaAsGivingUpFinestPart(String time, int precision, String expected) {
+        assertThat(WikidataDates.toDate(circa(time, precision)).displayText()).isEqualTo(expected);
+    }
+
+    /**
+     * Reads Trajan's death, where Wikidata prefers 7 August, 9 August and circa 8 August 117, as
+     * the month they share, instead of letting the approximate date widen it to years.
+     */
     @Test
-    void readsCircaAsUncertainty() {
-        assertThat(WikidataDates.toDate(circa("+1718-11-22T00:00:00Z", 11)).displayText()).isEqualTo("1718 ± 5");
-        assertThat(WikidataDates.toDate(circa("+1750-00-00T00:00:00Z", 7)).displayText()).isEqualTo("1751 ± 50");
+    void keepsMonthWhenPreferredDatesAreCloseAndOneIsApproximate() {
+        WikidataDate death = WikidataDates.read(List.of(
+                statement(Rank.PREFERRED, "+0117-08-07T00:00:00Z", 11),
+                statement(Rank.PREFERRED, "+0117-08-09T00:00:00Z", 11),
+                new WikidataStatement("P570", Rank.PREFERRED, new Time("+0117-08-08T00:00:00Z", 11, JULIAN),
+                        Map.of(WikidataDates.SOURCING_CIRCUMSTANCES, List.of(new Item(WikidataDates.CIRCA))))));
+
+        assertThat(death.date().displayText()).isEqualTo("Aug 117");
     }
 
     /** Keeps a date in the calendar the source gives, without converting it. */

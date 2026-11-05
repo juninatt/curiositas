@@ -15,7 +15,9 @@ import java.util.regex.Pattern;
  * <p>A date is read with its precision: a date known to the month keeps no day, even when Wikidata
  * shows one, and a decade or century becomes a year with an uncertainty that covers it. Years
  * before Christ, which Wikidata numbers without a year 0, become astronomical years, so 100 BC is
- * year -99. Dates are kept in the calendar the source gives, as everywhere in Curiositas.
+ * year -99. A date marked "circa" gives up its finest known part, so circa 8 August becomes August
+ * and circa 1697 becomes 1697 ± 5. Dates are kept in the calendar the source gives, as everywhere
+ * in Curiositas.
  *
  * <p>When a property has several statements, the preferred ones are used if there are any, and
  * otherwise the normal ones; deprecated statements are known to be wrong and are ignored. When the
@@ -37,7 +39,7 @@ public final class WikidataDates {
     /** The value of {@link #SOURCING_CIRCUMSTANCES} that marks a date as approximate. */
     static final String CIRCA = "Q5727902";
 
-    /** The uncertainty given to an approximate date, when the source does not say how approximate. */
+    /** The uncertainty given to an approximate year, when the source does not say how approximate. */
     static final int CIRCA_YEARS = 5;
 
     private static final int DAY = 11;
@@ -104,9 +106,24 @@ public final class WikidataDates {
         }
         date = common(bounds);
         if (statement.qualifier(SOURCING_CIRCUMSTANCES).contains(new WikidataValue.Item(CIRCA))) {
-            date = new HistoricalDate(date.year(), null, null, Math.max(date.uncertaintyYears(), CIRCA_YEARS));
+            date = approximately(date);
         }
         return date;
+    }
+
+    /**
+     * Makes a date approximate by giving up its finest known part: a day becomes its month, a month
+     * its year, and a year gets an uncertainty of {@link #CIRCA_YEARS}. A date that is already
+     * uncertain by at least that much stays as it is.
+     */
+    static HistoricalDate approximately(HistoricalDate date) {
+        if (date.day() != null) {
+            return new HistoricalDate(date.year(), date.month(), null, date.uncertaintyYears());
+        }
+        if (date.month() != null) {
+            return new HistoricalDate(date.year(), null, null, date.uncertaintyYears());
+        }
+        return new HistoricalDate(date.year(), null, null, Math.max(date.uncertaintyYears(), CIRCA_YEARS));
     }
 
     /**

@@ -194,7 +194,7 @@ What a fetch takes from Wikidata, and how:
 
 | Fact | Rule |
 |---|---|
-| Dates | Never more precise than Wikidata: a date known to the month gets no day, and a century becomes a year with an uncertainty of 50. "Circa" gives an uncertainty of 5 years. |
+| Dates | Never more precise than Wikidata: a date known to the month gets no day, and a century becomes a year with an uncertainty of 50. "Circa" gives up the finest known part, so circa 8 August becomes August and circa 1697 becomes 1697 ± 5. |
 | Disagreeing sources | Wikidata's preferred statement is used; without one, the statements are combined into what they share, so 12 or 13 July becomes July. The fetch lists every person whose sources disagree. |
 | Places | The English name, after how sure the source is, such as "possibly Kinsale". |
 | Birth country | The modern country of the place of birth: a country without an end date that has an ISO code, so Rome gives Italy, not the Roman Republic. |
