@@ -1,0 +1,28 @@
+{
+  "name": "Augustus",
+  "wikidataId": "Q1405",
+  "alsoKnownAs": [
+    {
+      "name": "C. Octavius C.f.",
+      "type": "BIRTH_NAME"
+    },
+    {
+      "name": "Thurinus",
+      "type": "NICKNAME"
+    }
+  ],
+  "birth": {
+    "year": -62,
+    "month": 9,
+    "day": 23
+  },
+  "birthPlace": "Rome",
+  "birthCountry": "IT",
+  "death": {
+    "year": 14,
+    "month": 8,
+    "day": 19
+  },
+  "deathPlace": "Nola",
+  "gender": "MALE"
+}

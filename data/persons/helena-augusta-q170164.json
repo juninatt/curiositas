@@ -1,0 +1,17 @@
+{
+  "name": "Helena Augusta",
+  "wikidataId": "Q170164",
+  "birth": {
+    "year": 250,
+    "uncertaintyYears": 5
+  },
+  "birthPlace": "Helenopolis",
+  "birthCountry": "TR",
+  "death": {
+    "year": 330,
+    "month": 8,
+    "day": 18
+  },
+  "deathPlace": "probably Nicomedia",
+  "gender": "FEMALE"
+}

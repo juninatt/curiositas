@@ -1,0 +1,27 @@
+{
+  "name": "Constantine the Great",
+  "wikidataId": "Q8413",
+  "alsoKnownAs": [
+    {
+      "name": "Flavius Constantinus",
+      "type": "BIRTH_NAME"
+    },
+    {
+      "name": "Trachala",
+      "type": "NICKNAME"
+    }
+  ],
+  "birth": {
+    "year": 272,
+    "month": 2
+  },
+  "birthPlace": "Niš",
+  "birthCountry": "RS",
+  "death": {
+    "year": 337,
+    "month": 5,
+    "day": 22
+  },
+  "deathPlace": "Nicomedia",
+  "gender": "MALE"
+}

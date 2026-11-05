@@ -1,0 +1,24 @@
+{
+  "name": "Hadrian",
+  "wikidataId": "Q1427",
+  "alsoKnownAs": [
+    {
+      "name": "Publius Aelius Hadrianus",
+      "type": "BIRTH_NAME"
+    }
+  ],
+  "birth": {
+    "year": 76,
+    "month": 1,
+    "day": 24
+  },
+  "birthPlace": "Italica",
+  "birthCountry": "ES",
+  "death": {
+    "year": 138,
+    "month": 7,
+    "day": 10
+  },
+  "deathPlace": "Baia",
+  "gender": "MALE"
+}

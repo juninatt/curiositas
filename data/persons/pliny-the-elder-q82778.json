@@ -1,0 +1,14 @@
+{
+  "name": "Pliny the Elder",
+  "wikidataId": "Q82778",
+  "birth": {
+    "year": 25,
+    "uncertaintyYears": 5
+  },
+  "birthPlace": "Novum Comum",
+  "death": {
+    "year": 79
+  },
+  "deathPlace": "Stabiae",
+  "gender": "MALE"
+}

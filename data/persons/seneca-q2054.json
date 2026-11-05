@@ -1,0 +1,16 @@
+{
+  "name": "Seneca",
+  "wikidataId": "Q2054",
+  "birth": {
+    "year": -3,
+    "uncertaintyYears": 5
+  },
+  "birthPlace": "Corduba",
+  "death": {
+    "year": 65,
+    "month": 4,
+    "day": 12
+  },
+  "deathPlace": "Rome",
+  "gender": "MALE"
+}

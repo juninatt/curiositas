@@ -1,0 +1,17 @@
+{
+  "name": "Virgil",
+  "wikidataId": "Q1398",
+  "birth": {
+    "year": -69,
+    "month": 10,
+    "day": 15
+  },
+  "birthPlace": "Andes",
+  "death": {
+    "year": -18,
+    "month": 9,
+    "day": 21
+  },
+  "deathPlace": "Brindisi",
+  "gender": "MALE"
+}

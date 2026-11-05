@@ -1,0 +1,14 @@
+{
+  "name": "Mark Antony",
+  "wikidataId": "Q51673",
+  "birth": {
+    "year": -82
+  },
+  "birthPlace": "Rome",
+  "birthCountry": "IT",
+  "death": {
+    "year": -29
+  },
+  "deathPlace": "Alexandria",
+  "gender": "MALE"
+}

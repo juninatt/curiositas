@@ -1,0 +1,13 @@
+{
+  "name": "Cornelia",
+  "wikidataId": "Q234533",
+  "birth": {
+    "year": -189,
+    "uncertaintyYears": 5
+  },
+  "birthPlace": "Ancient Rome",
+  "death": {
+    "year": -109
+  },
+  "gender": "FEMALE"
+}

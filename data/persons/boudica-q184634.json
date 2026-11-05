@@ -1,0 +1,15 @@
+{
+  "name": "Boudica",
+  "wikidataId": "Q184634",
+  "birth": {
+    "year": 30,
+    "uncertaintyYears": 5
+  },
+  "birthPlace": "Roman Britain",
+  "death": {
+    "year": 62,
+    "uncertaintyYears": 1
+  },
+  "deathPlace": "Roman Britain",
+  "gender": "FEMALE"
+}

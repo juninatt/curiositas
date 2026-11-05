@@ -1,0 +1,26 @@
+{
+  "name": "The Roman Empire",
+  "persons": [
+    { "wikidataId": "Q1048", "name": "Julius Caesar" },
+    { "wikidataId": "Q1405", "name": "Augustus" },
+    { "wikidataId": "Q1541", "name": "Cicero" },
+    { "wikidataId": "Q51673", "name": "Mark Antony" },
+    { "wikidataId": "Q1413", "name": "Nero" },
+    { "wikidataId": "Q1425", "name": "Trajan" },
+    { "wikidataId": "Q1427", "name": "Hadrian" },
+    { "wikidataId": "Q1430", "name": "Marcus Aurelius" },
+    { "wikidataId": "Q1442", "name": "Septimius Severus" },
+    { "wikidataId": "Q8413", "name": "Constantine the Great" },
+    { "wikidataId": "Q83406", "name": "Spartacus" },
+    { "wikidataId": "Q1398", "name": "Virgil" },
+    { "wikidataId": "Q2054", "name": "Seneca" },
+    { "wikidataId": "Q82778", "name": "Pliny the Elder" },
+    { "wikidataId": "Q469701", "name": "Livia" },
+    { "wikidataId": "Q2259", "name": "Julia the Elder" },
+    { "wikidataId": "Q154732", "name": "Agrippina the Younger" },
+    { "wikidataId": "Q234533", "name": "Cornelia" },
+    { "wikidataId": "Q184634", "name": "Boudica" },
+    { "wikidataId": "Q189705", "name": "Zenobia" },
+    { "wikidataId": "Q170164", "name": "Helena" }
+  ]
+}

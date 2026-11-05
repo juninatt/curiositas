@@ -1,0 +1,22 @@
+{
+  "name": "Septimius Severus",
+  "wikidataId": "Q1442",
+  "alsoKnownAs": [
+    {
+      "name": "Lucius Septimius Severus",
+      "type": "BIRTH_NAME"
+    }
+  ],
+  "birth": {
+    "year": 146
+  },
+  "birthPlace": "Leptis Magna",
+  "birthCountry": "LY",
+  "death": {
+    "year": 211,
+    "month": 2,
+    "day": 4
+  },
+  "deathPlace": "Eboracum",
+  "gender": "MALE"
+}

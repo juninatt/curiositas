@@ -1,0 +1,15 @@
+{
+  "name": "Julia the Elder",
+  "wikidataId": "Q2259",
+  "birth": {
+    "year": -38,
+    "month": 10,
+    "day": 30
+  },
+  "birthPlace": "Ancient Rome",
+  "death": {
+    "year": 14
+  },
+  "deathPlace": "Reggio Calabria",
+  "gender": "FEMALE"
+}

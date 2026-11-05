@@ -1,0 +1,20 @@
+{
+  "name": "Zenobia",
+  "wikidataId": "Q189705",
+  "alsoKnownAs": [
+    {
+      "name": "בת זבי",
+      "type": "BIRTH_NAME"
+    }
+  ],
+  "birth": {
+    "year": 240,
+    "uncertaintyYears": 5
+  },
+  "birthPlace": "Palmyra",
+  "birthCountry": "SY",
+  "death": {
+    "year": 274
+  },
+  "gender": "FEMALE"
+}

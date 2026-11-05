@@ -1,0 +1,24 @@
+{
+  "name": "Nero",
+  "wikidataId": "Q1413",
+  "alsoKnownAs": [
+    {
+      "name": "Lucius Domitius Ahenobarbus",
+      "type": "BIRTH_NAME"
+    }
+  ],
+  "birth": {
+    "year": 37,
+    "month": 12,
+    "day": 15
+  },
+  "birthPlace": "Antium",
+  "birthCountry": "IT",
+  "death": {
+    "year": 68,
+    "month": 6,
+    "day": 9
+  },
+  "deathPlace": "Rome",
+  "gender": "MALE"
+}

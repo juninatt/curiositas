@@ -47,12 +47,12 @@ steps. Tests are written alongside every step, never afterwards.
 
 ### 4. Curate from Wikidata
 
-- [ ] Fetch persons for one theme, the Roman Empire, from a list of Wikidata ids chosen by hand.
+- [x] Fetch persons for one theme, the Roman Empire, from a list of Wikidata ids chosen by hand.
   Rome comes first because Wikidata covers it well and its dates test the model hard: years
   before Christ, dates known only to the year, and sources that disagree
-- [ ] Turn Wikidata's statements, ranks and precisions into honest dates and places, and show
+- [x] Turn Wikidata's statements, ranks and precisions into honest dates and places, and show
   conflicting sources instead of choosing silently
-- [ ] Write the result to `data/` for review as a git diff before it is imported
+- [x] Write the result to `data/` for review as a git diff before it is imported
 
 ### 5. More for clients
 
@@ -107,7 +107,7 @@ a theme of their own. The themes span several parts of the world, so the dataset
 European. Sources cover some parts of the world more thinly than others; the dataset shows that
 honestly rather than filling the gaps.
 
-- [ ] The Roman Empire (the first theme, in step 4)
+- [x] The Roman Empire (the first theme, in step 4)
 - [ ] Ancient Greece
 - [ ] The Pre-Columbian Americas: the Aztec, Maya and Inca realms. Names with many spellings and
   thinner sources test `alsoKnownAs` and the honest uncertainty.

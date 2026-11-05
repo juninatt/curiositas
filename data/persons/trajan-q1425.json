@@ -1,0 +1,23 @@
+{
+  "name": "Trajan",
+  "wikidataId": "Q1425",
+  "alsoKnownAs": [
+    {
+      "name": "Marcus Ulpius Traianus",
+      "type": "BIRTH_NAME"
+    }
+  ],
+  "birth": {
+    "year": 53,
+    "month": 9,
+    "day": 18
+  },
+  "birthPlace": "Italica",
+  "birthCountry": "ES",
+  "death": {
+    "year": 117,
+    "month": 8
+  },
+  "deathPlace": "Selinus",
+  "gender": "MALE"
+}

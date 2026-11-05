@@ -1,0 +1,28 @@
+{
+  "name": "Marcus Aurelius",
+  "wikidataId": "Q1430",
+  "alsoKnownAs": [
+    {
+      "name": "Marcus Catilius Severus Annius Verus",
+      "type": "BIRTH_NAME"
+    },
+    {
+      "name": "Verissimus",
+      "type": "NICKNAME"
+    }
+  ],
+  "birth": {
+    "year": 121,
+    "month": 4,
+    "day": 26
+  },
+  "birthPlace": "Rome",
+  "birthCountry": "IT",
+  "death": {
+    "year": 180,
+    "month": 3,
+    "day": 17
+  },
+  "deathPlace": "Vindobona",
+  "gender": "MALE"
+}

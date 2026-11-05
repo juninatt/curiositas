@@ -1,0 +1,18 @@
+{
+  "name": "Agrippina the Younger",
+  "wikidataId": "Q154732",
+  "birth": {
+    "year": 15,
+    "month": 11,
+    "day": 6
+  },
+  "birthPlace": "Cologne",
+  "birthCountry": "DE",
+  "death": {
+    "year": 59,
+    "month": 3,
+    "day": 17
+  },
+  "deathPlace": "Miseno",
+  "gender": "FEMALE"
+}

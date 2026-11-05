@@ -1,0 +1,15 @@
+{
+  "name": "Spartacus",
+  "wikidataId": "Q83406",
+  "birth": {
+    "year": -102
+  },
+  "birthPlace": "Thrace",
+  "birthCountry": "BG",
+  "death": {
+    "year": -70,
+    "month": 4
+  },
+  "deathPlace": "Lucania",
+  "gender": "MALE"
+}

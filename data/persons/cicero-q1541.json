@@ -1,0 +1,18 @@
+{
+  "name": "Cicero",
+  "wikidataId": "Q1541",
+  "birth": {
+    "year": -105,
+    "month": 1,
+    "day": 3
+  },
+  "birthPlace": "Arpino",
+  "birthCountry": "IT",
+  "death": {
+    "year": -42,
+    "month": 12,
+    "day": 7
+  },
+  "deathPlace": "Formia",
+  "gender": "MALE"
+}

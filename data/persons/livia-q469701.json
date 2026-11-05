@@ -1,0 +1,17 @@
+{
+  "name": "Livia",
+  "wikidataId": "Q469701",
+  "birth": {
+    "year": -57,
+    "uncertaintyYears": 1
+  },
+  "birthPlace": "Rome",
+  "birthCountry": "IT",
+  "death": {
+    "year": 29,
+    "month": 9,
+    "day": 28
+  },
+  "deathPlace": "Rome",
+  "gender": "FEMALE"
+}
