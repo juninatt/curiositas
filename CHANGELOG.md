@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.0.0](https://github.com/juninatt/curiositas/compare/v0.7.0...v1.0.0) (2026-11-06)
+
+
+### Features
+
+* **data:** add a fetch command that writes the persons of every theme to data/ ([2a605d3](https://github.com/juninatt/curiositas/commit/2a605d3a5c71b5a2a7377641081f1b98e9e6906c))
+* **data:** curate the Roman Empire from Wikidata ([dbe7c33](https://github.com/juninatt/curiositas/commit/dbe7c33ed1821c78915398f2b4f6c2c23dc4a3b4))
+* **wikidata:** read the statements of persons from Wikidata ([40d70ea](https://github.com/juninatt/curiositas/commit/40d70ea15125da477ef47b68a28b81e59fd35f74))
+* **wikidata:** turn a Wikidata person into a person file ([1b65fbe](https://github.com/juninatt/curiositas/commit/1b65fbe2b1bb0aa736debc704821ef4b1067d515))
+* **wikidata:** turn Wikidata dates into honest historical dates ([0120a0c](https://github.com/juninatt/curiositas/commit/0120a0c5753457c17d52a322fe60e28d87661615))
+
+
+### Bug Fixes
+
+* **wikidata:** keep the month when a source dates a day only approximately ([249a985](https://github.com/juninatt/curiositas/commit/249a985cb2d63638a4b5c5a12b47ce5ee2a12d0a))
+
+
+### Chores
+
+* **release:** release 1.0.0 ([c01826b](https://github.com/juninatt/curiositas/commit/c01826b526153b071b5ce9134da5d3e4fa1b52b9))
+
 ## [0.7.0](https://github.com/juninatt/curiositas/compare/v0.6.0...v0.7.0) (2026-11-02)
 
 
