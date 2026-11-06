@@ -70,8 +70,8 @@ renaming, removing or changing the meaning of one is not. Before 1.0:
 
 - [x] JSON backup in `data/`, so no data depends on a single database
 - [x] The API is proven to match its contract (roadmap step 1)
-- [ ] The revision history and the change feed have the shape they are meant to keep (steps 2–3)
-- [ ] The person fields have the shape they are meant to keep
+- [x] The revision history and the change feed have the shape they are meant to keep (steps 2–3)
+- [x] The person fields have the shape they are meant to keep
 
 ## After version 1.0
 
