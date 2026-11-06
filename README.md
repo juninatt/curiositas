@@ -106,6 +106,10 @@ curl -u admin:choose-a-password -X POST http://localhost:8080/api/v1/persons \
 The response adds derived values that are calculated on every request and never stored, such as
 `"display": "1680 ± 5"` for the birth and `"ageAtDeath": {"min": 32, "max": 43}`.
 
+From version 1.0 the API only grows: nothing a client relies on is renamed, removed or given
+another meaning. Clients should ignore fields they do not know, accept new values in enumerations
+such as `gender`, and show display texts such as `"display"` without parsing them.
+
 Every read that can be cached has an `ETag`: a person its version, a page of persons and the
 snapshot the version of the dataset and of the application. Sending it back in `If-None-Match`
 gives `304 Not Modified` without a body until something changes.

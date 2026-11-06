@@ -23,6 +23,15 @@ info:
     **Concurrent updates** are detected with ETags: every person is returned with an `ETag`
     header, which must be sent back in `If-Match` when the person is replaced.
 
+    **Compatibility.** Within version 1 the API only grows; nothing a client relies on is renamed,
+    removed or given another meaning. Clients must therefore accept that:
+
+    - responses get new fields; ignore the fields you do not know
+    - enumerations, such as `gender` or the type of a name, get new values; treat an unknown value
+      as "other" instead of failing
+    - display texts, such as `display` of a date, may be worded differently in a later release;
+      show them, but never parse them, and calculate with `year`, `month` and `day` instead
+
 servers:
   - url: /api/v1
 
@@ -207,6 +216,8 @@ paths:
         Every person as it is now, ordered by name, together with the version of the dataset they
         belong to. The persons and the version are read at the same moment, so a client that
         loads the snapshot and then asks for the changes after its version misses nothing.
+        The snapshot is one response however large the dataset grows; to load it in pages
+        instead, read the changes after version 0, which hold the whole dataset.
         Send the ETag of an earlier response in `If-None-Match` to get 304 Not Modified instead,
         when nothing has changed.
       parameters:
@@ -282,6 +293,10 @@ paths:
         Every change ever made to the person, oldest first, each with the whole person as it was
         after the change. Deleted persons keep their revisions; the last one is the deletion,
         holding the person as it was before it.
+
+        A revision holds the person as stored facts, in the form a client sends, without derived
+        values such as `display` or `ageAtDeath`. Those are calculated anew on every read and may
+        improve between releases, so they are not part of the history.
       responses:
         '200':
           description: The revisions of the person
@@ -467,10 +482,14 @@ components:
           $ref: '#/components/schemas/HistoricalDateInput'
         birthPlace:
           type: string
+          description: |
+            The place of birth as the source names it, with how sure the source is in words when
+            it says, such as "possibly Kinsale"
           maxLength: 200
           example: Bristol
         deathPlace:
           type: string
+          description: The place of death as the source names it, like `birthPlace`
           maxLength: 200
           example: Ocracoke Island
         birthCountry:
@@ -509,9 +528,13 @@ components:
           $ref: '#/components/schemas/AgeRange'
         birthPlace:
           type: string
+          description: |
+            The place of birth as the source names it, with how sure the source is in words when
+            it says, such as "possibly Kinsale"
           example: Bristol
         deathPlace:
           type: string
+          description: The place of death as the source names it, like `birthPlace`
           example: Ocracoke Island
         birthCountry:
           $ref: '#/components/schemas/Country'
@@ -667,7 +690,8 @@ components:
       type: string
       description: |
         Where the change came from: the REST API, an import of the data files in the repository,
-        or Wikidata
+        or Wikidata directly. Persons fetched from Wikidata are reviewed as data files first, so
+        their changes come from `IMPORT`; `WIKIDATA` is kept for changes that come straight from it.
       enum: [ API, IMPORT, WIKIDATA ]
 
     HistoricalDateInput:
@@ -722,7 +746,9 @@ components:
           example: 5
         display:
           type: string
-          description: The date as text, showing only the known parts
+          description: |
+            The date as text, showing only the known parts. Meant to be shown, not parsed; the
+            wording may change between releases.
           example: 1680 ± 5
 
     AgeRange:
